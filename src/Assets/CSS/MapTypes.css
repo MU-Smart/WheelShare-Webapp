@@ -1,0 +1,65 @@
+#UI-Overlay {
+    display: block;
+    margin: 0 auto;
+    box-shadow: none;
+    position: fixed;
+    top: 5vh;
+    right: 5vh;
+    height: 20vh;
+    overflow-x: none;
+    z-index: 10;
+}
+
+.Overlay-Toggle-Icon, #Overlay-Toggle, #Surfaces, #Inclines {
+    position: fixed;
+    top: 5vh;
+    right: 5vh;
+    
+    width: 10vh;
+    height: 10vh;
+}
+
+#Surfaces {
+    right: 20vh;
+}
+
+
+.Overlay-Toggle-Icon {
+    margin: -5vh;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: absolute;
+    z-index: 99;
+}
+
+
+#Overlay-Content { 
+    float: left;
+    overflow-x: none;
+    opacity: 0;
+    transform: translateX(60%);
+    transition: transform 1.2s ease-in-out, opacity 1s ease-in-out;
+    
+}
+
+
+input[type="checkbox"]:checked ~ #Overlay-Content {
+    float: right;
+    transform: translateX(-50%);
+    opacity: 1;
+}
+
+.Overlay-Button {
+    background: none;
+    border: none;
+}
+
+.Overlay-Button-Icon {
+    width: 10vh;
+    height: 10vh;
+}
+
+.Overlay-Button-Text {
+    color:black;
+    font-weight: 700;
+}
