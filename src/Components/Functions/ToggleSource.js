@@ -3,6 +3,13 @@ import { surfaceMap } from "Assets/LayerStyles/surfaceMap.ts";
 
 const sidewalkData = require("Assets/sidewalk.geojson");
 
+// TODO: REWRITE THIS LOGIC -> IT CAN BE SIMPLIFIED
+/*
+    Handles: 
+      Change in slope  -> rerender slopemap if active
+      Toggle SlopeMap  -> toggle layer 
+      Toggle SurfaceMap-> toggle layer
+*/
 
 const ToggleSource = (type, mymap, slope) => {
   if (mymap) {
@@ -45,6 +52,6 @@ const ToggleSource = (type, mymap, slope) => {
       }
     }
   }
-}
+};
 
 export default ToggleSource;

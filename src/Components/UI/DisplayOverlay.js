@@ -1,4 +1,4 @@
-import OverlayButton from "Components/Button/OverlayButton";
+import OverlayButton from "Components/UI_Components/OverlayButton";
 import { Row, Col } from "react-bootstrap";
 
 const DisplayOverlay = (props) => {

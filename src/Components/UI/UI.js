@@ -8,7 +8,9 @@ import { routeStyle } from "Assets/LayerStyles/routeStyle.ts";
 import ToggleSource from "Components/Functions/ToggleSource";
 import DisplayOverlay from "./DisplayOverlay";
 import DisplayProfile from "./DisplayProfile";
-import MyMarker from "Components/Marker";
+import MyMarker from "Components/UI_Components/Marker";
+import Footer from "Components/UI_Components/Footer";
+import FeedbackBox from "Components/UI_Components/FeedbackBox";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "Assets/CSS/UI.css";
@@ -26,11 +28,7 @@ const sidewalkData = require("Assets/sidewalk.geojson");
 
 export default function Controls() {
   const { mymap } = useMap();
-
-  const [account, setAccount] = useState(null);
   const [slope, setSlope] = useState(DEFAULT_SLOPE);
-  const [route, setRoute] = useState(null);
-
   const [startAddress, setStartAddress] = useState("");
   const [endAddress, setEndAddress] = useState("");
 
@@ -38,6 +36,7 @@ export default function Controls() {
     name: "Start Address",
     center: new mapboxgl.LngLat(0, 0),
   });
+
   const endMarker = MyMarker({
     name: "End Address",
     center: new mapboxgl.LngLat(0, 0),
@@ -157,21 +156,9 @@ export default function Controls() {
       });
   };
 
-  // TODO: REWRITE THIS LOGIC -> IT CAN BE SIMPLIFIED
-  /*
-    Handles: 
-      Change in slope  -> rerender slopemap if active
-      Toggle SlopeMap  -> toggle layer 
-      Toggle SurfaceMap-> toggle layer
-  */
-
   React.useEffect(() => {
     ToggleSource("slopeChange", mymap, slope);
   }, [slope]);
-
-  React.useEffect(() => {
-    console.log(route);
-  }, [route]);
 
   // ======= UI Handlers ======= \\
   const onChangeStart = useCallback((evt) => {
@@ -212,7 +199,9 @@ export default function Controls() {
 
       <div id="UI">
         <div id="UI-Left" className="UI-Left">
+
           <div id="UI-Title">MyPath</div>
+          
           <div id="UI-Content">
             <Container>
               <Form onSubmit={onSubmit}>
@@ -279,30 +268,7 @@ export default function Controls() {
             </div>
 
             <div id="Footer-Info">
-              <Row>
-                <Col xs={4}>
-                  <a
-                    href="http://routemypath.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    About
-                  </a>
-                </Col>
-                <Col xs={4}>
-                  <Button
-                    onClick={() => {
-                      let Panel = document.getElementById("Feedback");
-                      Panel.classList.remove("Feedback-Hidden");                     
-                    }}
-                  >
-                    Feedback
-                  </Button>
-                </Col>
-                <Col xs={4}>
-                  <a href="mailto:raychov@MiamiOH.edu">Contact Us</a>
-                </Col>
-              </Row>
+              <Footer/>
             </div>
           </div>
           <Button
@@ -323,37 +289,11 @@ export default function Controls() {
               &lt;
             </p>
           </Button>
+
           <div id="Feedback" className="Feedback Feedback-Hidden">
-            <Form
-              onSubmit={(event) => {
-                event.preventDefault();
-                console.log(event.target[0].value);
-                let Panel = document.getElementById("Feedback");
-                Panel.classList.add("Feedback-Hidden");
-              }}
-            >
-              <p className="Feedback-Title">Feedback</p>
-              <textarea className="form-control Feedback-Text" rows={6} />
-              <Row>
-                <Col xs={6}>
-                  <Button
-                    className="Feedback-Button"
-                    onClick={() => {
-                      let Panel = document.getElementById("Feedback");
-                      Panel.classList.add("Feedback-Hidden");
-                    }}
-                  >
-                    Close
-                  </Button>
-                </Col>
-                <Col xs={6}>
-                  <Button type="submit" className="Feedback-Button">
-                    Send Feedback
-                  </Button>
-                </Col>
-              </Row>
-            </Form>
+            <FeedbackBox />
           </div>
+
         </div>
       </div>
     </>
