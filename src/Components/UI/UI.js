@@ -3,10 +3,11 @@ import { Form, Container, Row, Col, Button } from "react-bootstrap";
 import { useCallback, useState } from "react";
 import { useMap } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
-import { inclineMap } from "Assets/LayerStyles/inclineMap.ts";
-import { surfaceMap } from "Assets/LayerStyles/surfaceMap.ts";
 import { routeStyle } from "Assets/LayerStyles/routeStyle.ts";
 
+import ToggleSource from "Components/Functions/ToggleSource";
+import DisplayOverlay from "./DisplayOverlay";
+import DisplayProfile from "./DisplayProfile";
 import MyMarker from "Components/Marker";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -41,26 +42,6 @@ export default function Controls() {
     name: "End Address",
     center: new mapboxgl.LngLat(0, 0),
   });
-
-  // ======= Initiation ====== \\
-  // useEffect(() => {
-  //   if (!mymap) {
-  //     return undefined;
-  //   }
-
-  //   const onLoad = () => {
-  //     // fetch("http://testing.mypath.routemypath.com:8000/api/v1/overlays")
-  //     //   .then((resp) => resp.json())
-  //     //   .then((json) => setOverlays(json));
-  //   };
-
-  //   mymap.on("load", onLoad);
-  //   onLoad();
-
-  //   return () => {
-  //     mymap.off("load", onLoad);
-  //   };
-  // }, [mymap]);
 
   // ===== Helper Methods ===== \\
   const checkValidAddress = (input) => {
@@ -183,51 +164,9 @@ export default function Controls() {
       Toggle SlopeMap  -> toggle layer 
       Toggle SurfaceMap-> toggle layer
   */
-  const ToggleSource = (type) => {
-    if (mymap) {
-      // Add Sidewalk data to the map (only occurs first time)
-      if (mymap.getMap().getSource("sidewalk") === undefined)
-        mymap.getMap().addSource("sidewalk", {
-          type: "geojson",
-          data: sidewalkData,
-        });
-
-      switch (type) {
-        case "slopeChange": {
-          // Could try to use mymap.getMap().setLayoutProperty()
-          if (mymap.getMap().getLayer("inclineMap") !== undefined) {
-            mymap.getMap().removeLayer("inclineMap");
-            mymap.getMap().addLayer(inclineMap(slope));
-          }
-          break;
-        }
-
-        case "inclines": {
-          if (mymap.getMap().getLayer("inclineMap") === undefined) {
-            mymap.getMap().addLayer(inclineMap(slope));
-          } else {
-            mymap.getMap().removeLayer("inclineMap");
-          }
-          break;
-        }
-
-        case "surfaces": {
-          if (mymap.getMap().getLayer("surfaceMap") === undefined) {
-            mymap.getMap().addLayer(surfaceMap);
-          } else {
-            mymap.getMap().removeLayer("surfaceMap");
-          }
-          break;
-        }
-        default: {
-          console.error(`Invalid Layer type: ${type}`);
-        }
-      }
-    }
-  };
 
   React.useEffect(() => {
-    ToggleSource("slopeChange");
+    ToggleSource("slopeChange", mymap, slope);
   }, [slope]);
 
   React.useEffect(() => {
@@ -265,61 +204,11 @@ export default function Controls() {
     setSlope(evt.target.value);
   }, []);
 
-  // ======= Components ======= \\
-  function DisplayProfile(props) {
-    if (account != null && account.loggedIn) {
-      return <div id="Account"></div>;
-    } else {
-      return (
-        <div id="SignIn">
-          <Row>
-            <Button className="Account-Button">Log In</Button>
-          </Row>
-          <Row>
-            <Button className="Account-Button">Sign Up</Button>
-          </Row>
-        </div>
-      );
-    }
-  }
-
-  function DisplayOverlays() {
-    const Buttons = (props) => {
-      return (
-        <Button
-          className={"Overlay-Toggle-" + props.id}
-          id={props.id}
-          onClick={() => ToggleSource(props.type)}
-        >
-          <img
-            src={"http://routemypath.com/assets/img/favicon2.png"}
-            alt="Map Toggle Icon"
-            width="100%"
-            height="100%"
-            className="Overlay-Toggle-Icon"
-          />
-        </Button>
-      );
-    };
-
-    return (
-      <div id="UI-Overlay">
-        <Row className="Overlay-Row">
-          <Col md={6}>
-            <Buttons id="Incline" type="inclines" />
-          </Col>
-          <Col md={6}>
-            <Buttons id="Surfaces" type="surfaces" />
-          </Col>
-        </Row>
-      </div>
-    );
-  }
 
   //  ======= Return ======= \\
   return (
     <>
-      <DisplayOverlays />
+      <DisplayOverlay map={mymap} slope={slope}/>
 
       <div id="UI">
         <div id="UI-Left" className="UI-Left">
@@ -384,9 +273,11 @@ export default function Controls() {
                 />
               </Row>
             </div>
+
             <div id="Profile">
               <DisplayProfile />
             </div>
+
             <div id="Footer-Info">
               <Row>
                 <Col xs={4}>

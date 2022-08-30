@@ -2,8 +2,8 @@ import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { MapProvider } from "react-map-gl";
 
-import Map from "./Components/Map";
-import UI from "./Components/UI";
+import Map from "./Components/Map/Map";
+import UI from "./Components/UI/UI";
 
 function Root() {
   return (
