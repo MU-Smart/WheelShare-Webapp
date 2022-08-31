@@ -1,36 +1,19 @@
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
+import "Assets/CSS/UI.css";
 
-const FeedbackBox = () => {
+const FeedbackBox = ({setOverlayFeedback}) => {
   return (
-    <Form
-      onSubmit={(event) => {
-        event.preventDefault();
-        console.log(event.target[0].value);
-        let Panel = document.getElementById("Feedback");
-        Panel.classList.add("Feedback-Hidden");
-      }}
-    >
-      <p className="Feedback-Title">Feedback</p>
-      <textarea className="form-control Feedback-Text" rows={6} />
-      <Row>
-        <Col xs={6}>
-          <Button
-            className="Feedback-Button"
-            onClick={() => {
-              let Panel = document.getElementById("Feedback");
-              Panel.classList.add("Feedback-Hidden");
-            }}
-          >
-            Close
-          </Button>
-        </Col>
-        <Col xs={6}>
-          <Button type="submit" className="Feedback-Button">
-            Send Feedback
-          </Button>
-        </Col>
-      </Row>
-    </Form>
+    <div className="overlay">
+      <Card className="overlay-content">
+      <Card.Body>
+        <Card.Title>Card Title</Card.Title>
+        <Card.Text>
+          Leave your feedback in the space below!
+        </Card.Text>
+        <Button variant="primary" onClick={() => {setOverlayFeedback(false)}}>Close</Button>
+      </Card.Body>
+    </Card>
+    </div>
   );
 };
 

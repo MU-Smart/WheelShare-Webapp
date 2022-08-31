@@ -31,6 +31,7 @@ export default function Controls() {
   const [slope, setSlope] = useState(DEFAULT_SLOPE);
   const [startAddress, setStartAddress] = useState("");
   const [endAddress, setEndAddress] = useState("");
+  const [overlayFeedback, setOverlayFeedback] = useState(true);
 
   const startMarker = MyMarker({
     name: "Start Address",
@@ -108,14 +109,14 @@ export default function Controls() {
 
   const GetRoute = () => {
     const Source = {
-      lon: "0", 
-      lat: "0"
-    }
+      lon: "0",
+      lat: "0",
+    };
 
     const Dest = {
       lon: "0",
-      lat: "0"
-    }
+      lat: "0",
+    };
 
     const routeArgs = {
       method: "POST",
@@ -149,7 +150,7 @@ export default function Controls() {
         }
         // Adding new route and styles to map sources
         mymap.getMap().addSource("route", {
-          type: 'geojson',
+          type: "geojson",
           data: jsonSource,
         });
         mymap.getMap().addLayer(routeStyle);
@@ -191,17 +192,17 @@ export default function Controls() {
     setSlope(evt.target.value);
   }, []);
 
-
   //  ======= Return ======= \\
   return (
     <>
-      <DisplayOverlay map={mymap} slope={slope}/>
+      {overlayFeedback && <FeedbackBox setOverlayFeedback={setOverlayFeedback}/>}
+
+      <DisplayOverlay map={mymap} slope={slope} />
 
       <div id="UI">
         <div id="UI-Left" className="UI-Left">
-
           <div id="UI-Title">MyPath</div>
-          
+
           <div id="UI-Content">
             <Container>
               <Form onSubmit={onSubmit}>
@@ -245,6 +246,7 @@ export default function Controls() {
                 </div>
               </Form>
             </Container>
+
             <div id="Slider">
               <label htmlFor="InclineSlider" className="Slider-Text">
                 {`Current Incline Upper Limit: ${slope}%`}
@@ -270,7 +272,13 @@ export default function Controls() {
             <div id="Footer-Info">
               <Footer/>
             </div>
+
           </div>
+
+          <Button onClick={() => {
+            console.log(overlayFeedback);
+          }}>Test</Button>
+
           <Button
             className="Back-Arrow-Header"
             onClick={() => {
@@ -289,11 +297,6 @@ export default function Controls() {
               &lt;
             </p>
           </Button>
-
-          <div id="Feedback" className="Feedback Feedback-Hidden">
-            <FeedbackBox />
-          </div>
-
         </div>
       </div>
     </>
