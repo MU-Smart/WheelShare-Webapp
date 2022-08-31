@@ -11,10 +11,13 @@ import DisplayProfile from "./DisplayProfile";
 import MyMarker from "Components/UI_Components/Marker";
 import Footer from "Components/UI_Components/Footer";
 import FeedbackBox from "Components/UI_Components/FeedbackBox";
+import Slider from "Components/UI_Components/Slider";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "Assets/CSS/UI.css";
 import "Assets/CSS/MapTypes.css";
+import "Assets/CSS/Footer.css";
+import "Assets/CSS/Profile.css";
 
 const DEFAULT_SLOPE = 8.0;
 const SLOPE_STEP = 0.05;
@@ -35,7 +38,6 @@ export default function Controls() {
 
   const handleCloseOverlay = () => setShowOverlay(false);
   const handleShowOverlay = () => setShowOverlay(true);
-
 
   const startMarker = MyMarker({
     name: "Start Address",
@@ -192,98 +194,82 @@ export default function Controls() {
     [endAddress, endMarker, geocode, startAddress, startMarker]
   );
 
-  const onSlopeChange = useCallback((evt) => {
-    setSlope(evt.target.value);
-  }, []);
-
   //  ======= Return ======= \\
   return (
     <>
-      {overlayFeedback && <FeedbackBox setOverlayFeedback={setOverlayFeedback}/>}
+      {overlayFeedback && (
+        <FeedbackBox setOverlayFeedback={setOverlayFeedback} />
+      )}
 
       <DisplayOverlay map={mymap} slope={slope} />
 
       <Button id="overlay-button" variant="primary" onClick={handleShowOverlay}>
-        Launch
+        Search Bar
       </Button>
 
-      <Offcanvas show={showOverlay} onHide={handleCloseOverlay}>
-        <div id="UI-Left" className="UI-Left">
-          <div id="UI-Title">MyPath</div>
+      <Offcanvas
+        id="UI-Left"
+        className="UI-Left"
+        show={showOverlay}
+        onHide={handleCloseOverlay}
+      >
+        <div id="UI-Title">MyPath</div>
 
-          <div id="UI-Content">
-            <Container>
-              <Form onSubmit={onSubmit}>
-                <div id="Search-Area">
-                  <Row>
-                    <Col md={8}>
-                      <input
-                        type="text"
-                        className="form-control UI-Search"
-                        id="startLocation"
-                        placeholder="Starting point"
-                        onChange={onChangeStart}
-                        value={startAddress || ""}
-                      />
-                    </Col>
-                    <Col md={4}>
-                      <Button className="UI-Submit" onClick={swapInputs}>
-                        Swap
-                      </Button>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={8}>
-                      <input
-                        type="text"
-                        className="form-control UI-Search"
-                        id="endLocation"
-                        placeholder="Ending point"
-                        onChange={onChangeEnd}
-                        value={endAddress || ""}
-                      />
-                    </Col>
-                    <Col md={4}>
-                      <input
-                        type="submit"
-                        className="btn-primary UI-Submit"
-                        value="Search"
-                      />
-                    </Col>
-                  </Row>
-                </div>
-              </Form>
-            </Container>
+        <div id="UI-Content">
+          <Container>
+            <Form onSubmit={onSubmit}>
+              <div id="Search-Area">
+                <Row>
+                  <Col md={8}>
+                    <input
+                      type="text"
+                      className="form-control UI-Search"
+                      id="startLocation"
+                      placeholder="Starting point"
+                      onChange={onChangeStart}
+                      value={startAddress || ""}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <Button className="UI-Submit" onClick={swapInputs}>
+                      Swap
+                    </Button>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={8}>
+                    <input
+                      type="text"
+                      className="form-control UI-Search"
+                      id="endLocation"
+                      placeholder="Ending point"
+                      onChange={onChangeEnd}
+                      value={endAddress || ""}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <input
+                      type="submit"
+                      className="btn-primary UI-Submit"
+                      value="Search"
+                    />
+                  </Col>
+                </Row>
+              </div>
+            </Form>
+          </Container>
 
-            <div id="Slider">
-              <label htmlFor="InclineSlider" className="Slider-Text">
-                {`Current Incline Upper Limit: ${slope}%`}
-              </label>
-              <Row>
-                <input
-                  id="InclineSlider"
-                  className="Slider"
-                  type="range"
-                  min={SLOPE_MIN}
-                  max={SLOPE_MAX}
-                  value={slope}
-                  step={SLOPE_STEP}
-                  onChange={onSlopeChange}
-                />
-              </Row>
-            </div>
-
-            <div id="Profile">
-              <DisplayProfile />
-            </div>
-
-            <div id="Footer-Info">
-              <Footer setOverlayFeedback={setOverlayFeedback}/>
-            </div>
-
+          <div id="Slider">
+            <Slider slope={slope} setSlope={setSlope} />
           </div>
 
+          <div id="Profile">
+            <DisplayProfile />
+          </div>
 
+          <div id="Footer">
+            <Footer setOverlayFeedback={setOverlayFeedback} />
+          </div>
         </div>
       </Offcanvas>
     </>

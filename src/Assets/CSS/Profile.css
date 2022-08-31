@@ -1,0 +1,14 @@
+#Profile {
+  position: absolute;
+  width: 90%;
+  height: 30%;
+
+  top: 50%;
+
+  background-color: rgb(173, 172, 172);
+  border-radius: 6px;
+}
+.Account-Button {
+  margin: 2% auto 0 auto;
+  width: 30%;
+}
