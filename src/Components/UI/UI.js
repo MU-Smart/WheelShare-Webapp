@@ -18,6 +18,7 @@ import "Assets/CSS/UI.css";
 import "Assets/CSS/MapTypes.css";
 import "Assets/CSS/Footer.css";
 import "Assets/CSS/Profile.css";
+import "Assets/CSS/Slider.css";
 
 const DEFAULT_SLOPE = 8.0;
 const SLOPE_STEP = 0.05;

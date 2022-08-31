@@ -1,0 +1,17 @@
+#Slider {
+  position: absolute;
+  width: 90%;
+
+  top: 30%;
+}
+
+.Slider-Text {
+  text-align: left;
+  width: 100%;
+  margin-top: 15%;
+}
+
+.Slider {
+  margin: auto;
+  width: 90%;
+}
