@@ -1,17 +1,16 @@
 import * as React from "react";
-import { Form, Container, Row, Col, Button, Offcanvas } from "react-bootstrap";
+import { Button, Offcanvas } from "react-bootstrap";
 import { useCallback, useState } from "react";
 import { useMap } from "react-map-gl";
-import mapboxgl from "mapbox-gl";
 import { routeStyle } from "Assets/LayerStyles/routeStyle.ts";
 
 import ToggleSource from "Components/Functions/ToggleSource";
 import DisplayOverlay from "./DisplayOverlay";
 import DisplayProfile from "./DisplayProfile";
-import MyMarker from "Components/UI_Components/Marker";
 import Footer from "Components/UI_Components/Footer";
 import FeedbackBox from "Components/UI_Components/FeedbackBox";
 import Slider from "Components/UI_Components/Slider";
+import SearchBar from "Components/UI_Components/SearchBar";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "Assets/CSS/UI.css";
@@ -19,11 +18,9 @@ import "Assets/CSS/MapTypes.css";
 import "Assets/CSS/Footer.css";
 import "Assets/CSS/Profile.css";
 import "Assets/CSS/Slider.css";
+import "Assets/CSS/Searchbar.css";
 
 const DEFAULT_SLOPE = 8.0;
-const SLOPE_STEP = 0.05;
-const SLOPE_MIN = 2.0;
-const SLOPE_MAX = 15.0;
 const EASE_DUR = 2500; // Time in MS to travel to a location
 const MIN_ZOOM = 15.5; // Minimum map zoom while easing
 const MAX_ZOOM = 18; // Maximum map zoom while easing
@@ -31,24 +28,14 @@ const MAX_ZOOM = 18; // Maximum map zoom while easing
 export default function Controls() {
   const { mymap } = useMap();
   const [slope, setSlope] = useState(DEFAULT_SLOPE);
-  const [startAddress, setStartAddress] = useState("");
-  const [endAddress, setEndAddress] = useState("");
+  // const [startAddress, setStartAddress] = useState("");
+  // const [endAddress, setEndAddress] = useState("");
 
   const [overlayFeedback, setOverlayFeedback] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
   const handleCloseOverlay = () => setShowOverlay(false);
   const handleShowOverlay = () => setShowOverlay(true);
-
-  const startMarker = MyMarker({
-    name: "Start Address",
-    center: new mapboxgl.LngLat(0, 0),
-  });
-
-  const endMarker = MyMarker({
-    name: "End Address",
-    center: new mapboxgl.LngLat(0, 0),
-  });
 
   // ===== Helper Methods ===== \\
   const checkValidAddress = (input) => {
@@ -169,31 +156,31 @@ export default function Controls() {
   }, [slope]);
 
   // ======= UI Handlers ======= \\
-  const onChangeStart = useCallback((evt) => {
-    setStartAddress(evt.target.value);
-  }, []);
+  // const onChangeStart = useCallback((evt) => {
+  //   setStartAddress(evt.target.value);
+  // }, []);
 
-  const onChangeEnd = useCallback((evt) => {
-    setEndAddress(evt.target.value);
-  }, []);
+  // const onChangeEnd = useCallback((evt) => {
+  //   setEndAddress(evt.target.value);
+  // }, []);
 
-  const swapInputs = useCallback(() => {
-    const temp = startAddress;
-    setStartAddress(endAddress);
-    setEndAddress(temp);
-  }, [startAddress, endAddress]);
+  // const swapInputs = useCallback(() => {
+  //   const temp = startAddress;
+  //   setStartAddress(endAddress);
+  //   setEndAddress(temp);
+  // }, [startAddress, endAddress]);
 
-  const onSubmit = useCallback(
-    (evt) => {
-      GetRoute();
+  // const onSubmit = useCallback(
+  //   (evt) => {
+  //     GetRoute();
 
-      evt.preventDefault();
+  //     evt.preventDefault();
 
-      geocode(startAddress, startMarker);
-      geocode(endAddress, endMarker);
-    },
-    [endAddress, endMarker, geocode, startAddress, startMarker]
-  );
+  //     geocode(startAddress, startMarker);
+  //     geocode(endAddress, endMarker);
+  //   },
+  //   [endAddress, endMarker, geocode, startAddress, startMarker]
+  // );
 
   //  ======= Return ======= \\
   return (
@@ -209,56 +196,15 @@ export default function Controls() {
       </Button>
 
       <Offcanvas
-        id="UI-Left"
-        className="UI-Left"
+        id="Offcanvas"
+        className="Offcanvas"
         show={showOverlay}
         onHide={handleCloseOverlay}
       >
-        <div id="UI-Title">MyPath</div>
+        <div id="Offcanvas-Title">MyPath</div>
 
         <div id="UI-Content">
-          <Container>
-            <Form onSubmit={onSubmit}>
-              <div id="Search-Area">
-                <Row>
-                  <Col md={8}>
-                    <input
-                      type="text"
-                      className="form-control UI-Search"
-                      id="startLocation"
-                      placeholder="Starting point"
-                      onChange={onChangeStart}
-                      value={startAddress || ""}
-                    />
-                  </Col>
-                  <Col md={4}>
-                    <Button className="UI-Submit" onClick={swapInputs}>
-                      Swap
-                    </Button>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={8}>
-                    <input
-                      type="text"
-                      className="form-control UI-Search"
-                      id="endLocation"
-                      placeholder="Ending point"
-                      onChange={onChangeEnd}
-                      value={endAddress || ""}
-                    />
-                  </Col>
-                  <Col md={4}>
-                    <input
-                      type="submit"
-                      className="btn-primary UI-Submit"
-                      value="Search"
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </Form>
-          </Container>
+          <SearchBar GetRoute={GetRoute} geocode={geocode} />
 
           <div id="Slider">
             <Slider slope={slope} setSlope={setSlope} />
