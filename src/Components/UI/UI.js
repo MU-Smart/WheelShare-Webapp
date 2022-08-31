@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form, Container, Row, Col, Button } from "react-bootstrap";
+import { Form, Container, Row, Col, Button, Offcanvas } from "react-bootstrap";
 import { useCallback, useState } from "react";
 import { useMap } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
@@ -24,14 +24,18 @@ const EASE_DUR = 2500; // Time in MS to travel to a location
 const MIN_ZOOM = 15.5; // Minimum map zoom while easing
 const MAX_ZOOM = 18; // Maximum map zoom while easing
 
-const sidewalkData = require("Assets/sidewalk.geojson");
-
 export default function Controls() {
   const { mymap } = useMap();
   const [slope, setSlope] = useState(DEFAULT_SLOPE);
   const [startAddress, setStartAddress] = useState("");
   const [endAddress, setEndAddress] = useState("");
-  const [overlayFeedback, setOverlayFeedback] = useState(true);
+
+  const [overlayFeedback, setOverlayFeedback] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const handleCloseOverlay = () => setShowOverlay(false);
+  const handleShowOverlay = () => setShowOverlay(true);
+
 
   const startMarker = MyMarker({
     name: "Start Address",
@@ -199,7 +203,11 @@ export default function Controls() {
 
       <DisplayOverlay map={mymap} slope={slope} />
 
-      <div id="UI">
+      <Button id="overlay-button" variant="primary" onClick={handleShowOverlay}>
+        Launch
+      </Button>
+
+      <Offcanvas show={showOverlay} onHide={handleCloseOverlay}>
         <div id="UI-Left" className="UI-Left">
           <div id="UI-Title">MyPath</div>
 
@@ -270,35 +278,14 @@ export default function Controls() {
             </div>
 
             <div id="Footer-Info">
-              <Footer/>
+              <Footer setOverlayFeedback={setOverlayFeedback}/>
             </div>
 
           </div>
 
-          <Button onClick={() => {
-            console.log(overlayFeedback);
-          }}>Test</Button>
 
-          <Button
-            className="Back-Arrow-Header"
-            onClick={() => {
-              let UI = document.getElementById("UI-Left");
-              let text = document.getElementById("Back-Arrow-Text");
-              if (UI.classList.contains("UI-Left-Hidden")) {
-                UI.classList.remove("UI-Left-Hidden");
-                text.classList.remove("Back-Arrow-Text-Flipped");
-              } else {
-                UI.classList.add("UI-Left-Hidden");
-                text.classList.add("Back-Arrow-Text-Flipped");
-              }
-            }}
-          >
-            <p className="Back-Arrow-Text" id="Back-Arrow-Text">
-              &lt;
-            </p>
-          </Button>
         </div>
-      </div>
+      </Offcanvas>
     </>
   );
 }

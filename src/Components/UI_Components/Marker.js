@@ -1,7 +1,7 @@
 import mapboxgl from "mapbox-gl";
 import pinImage from "Assets/pin.png";
 
-import "Assets/CSS/marker.css";
+import "Assets/CSS/Marker.css";
 
 myMarker.propTypes = {
   name: String,

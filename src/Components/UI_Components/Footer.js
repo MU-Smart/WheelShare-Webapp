@@ -1,9 +1,7 @@
-import { useCallback, useState } from "react";
-import { Row, Col, Button, ButtonGroup } from "react-bootstrap";
-import FeedbackBox from "./FeedbackBox";
+import { Button, ButtonGroup } from "react-bootstrap";
 import "Assets/CSS/UI.css";
 
-const Footer = () => {
+const Footer = ({ setOverlayFeedback }) => {
   return (
     <>
       <ButtonGroup aria-label="Basic example">
@@ -15,7 +13,9 @@ const Footer = () => {
         >
           About Us
         </Button>
-        <Button variant="secondary">Feedback</Button>
+        <Button variant="secondary" onClick={() => setOverlayFeedback(true)}>
+          Feedback
+        </Button>
         <Button variant="secondary">Contact Us</Button>
       </ButtonGroup>
     </>
