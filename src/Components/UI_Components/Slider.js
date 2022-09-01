@@ -1,8 +1,6 @@
 import { Row } from "react-bootstrap";
 
-const SLOPE_STEP = 0.05;
-const SLOPE_MIN = 2.0;
-const SLOPE_MAX = 15.0;
+import { SLOPE_STEP, SLOPE_MIN, SLOPE_MAX } from "Constants.js";
 
 const Slider = ({ slope, setSlope }) => {
   const onSlopeChange = (evt) => {

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button, Offcanvas } from "react-bootstrap";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useMap } from "react-map-gl";
 import { routeStyle } from "Assets/LayerStyles/routeStyle.ts";
 
@@ -20,23 +20,21 @@ import "Assets/CSS/Profile.css";
 import "Assets/CSS/Slider.css";
 import "Assets/CSS/Searchbar.css";
 
-const DEFAULT_SLOPE = 8.0;
-const EASE_DUR = 2500; // Time in MS to travel to a location
-const MIN_ZOOM = 15.5; // Minimum map zoom while easing
-const MAX_ZOOM = 18; // Maximum map zoom while easing
+import { DEFAULT_SLOPE, EASE_DUR, MIN_ZOOM, MAX_ZOOM } from "Constants.js";
 
 export default function Controls() {
   const { mymap } = useMap();
   const [slope, setSlope] = useState(DEFAULT_SLOPE);
-  // const [startAddress, setStartAddress] = useState("");
-  // const [endAddress, setEndAddress] = useState("");
 
   const [overlayFeedback, setOverlayFeedback] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
   const handleCloseOverlay = () => setShowOverlay(false);
-  const handleShowOverlay = () => setShowOverlay(true);
+  const handleShowOverlay = () => {
+    console.log(process.env.REACT_APP_TOKEN);
+    setShowOverlay(true);
 
+  }
   // ===== Helper Methods ===== \\
   const checkValidAddress = (input) => {
     return input !== null && input.length > 2;
@@ -50,21 +48,6 @@ export default function Controls() {
       // makes sure map zoom stays within MIN and MAX values
       const setZoom = Math.max(Math.min(mapZoom, MAX_ZOOM), MIN_ZOOM);
 
-      // TODO - IMPLEMENT METHOD THAT TAKES BOTH PARAMS INTO ACCOUNT
-      /*
-      //  XOR of check valid start/end location
-      if (Boolean(startAddress) ^ Boolean(endAddress)) {
-        mymap.easeTo({
-          center: startCheck ? [startLoc] : [endLoc],
-          duration: EASE_DUR,
-        });
-      } else {
-        mymap.easeTo({
-          center: startLoc - endLoc,
-          zoom: mymap.fitScreenCoordinates(startLoc, endLoc, 0),
-          duration: EASE_DUR,
-        });
-      }*/
       mymap.easeTo({ center: props.center, duration: EASE_DUR, zoom: setZoom });
     },
     [mymap]
@@ -151,36 +134,9 @@ export default function Controls() {
       });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     ToggleSource("slopeChange", mymap, slope);
   }, [slope]);
-
-  // ======= UI Handlers ======= \\
-  // const onChangeStart = useCallback((evt) => {
-  //   setStartAddress(evt.target.value);
-  // }, []);
-
-  // const onChangeEnd = useCallback((evt) => {
-  //   setEndAddress(evt.target.value);
-  // }, []);
-
-  // const swapInputs = useCallback(() => {
-  //   const temp = startAddress;
-  //   setStartAddress(endAddress);
-  //   setEndAddress(temp);
-  // }, [startAddress, endAddress]);
-
-  // const onSubmit = useCallback(
-  //   (evt) => {
-  //     GetRoute();
-
-  //     evt.preventDefault();
-
-  //     geocode(startAddress, startMarker);
-  //     geocode(endAddress, endMarker);
-  //   },
-  //   [endAddress, endMarker, geocode, startAddress, startMarker]
-  // );
 
   //  ======= Return ======= \\
   return (

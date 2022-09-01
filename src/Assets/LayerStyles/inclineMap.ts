@@ -1,6 +1,4 @@
-const MIN_ZOOM_LEVEL = 14;
-const MAX_ZOOM_LEVEL = 22;
-const ZOOM_INTERP = [15, 1, 16, 1.6, 18, 6];
+import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL, ZOOM_INTERP } from "Constants.js";
 
 
 export const inclineMap = (slope: string) => {

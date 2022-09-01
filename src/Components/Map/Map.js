@@ -1,6 +1,5 @@
 import * as React from "react";
 import Map from "react-map-gl";
-import { TOKEN, MAPSTYLE } from "Components/constants";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import "Assets/CSS/Map.css";
@@ -41,8 +40,8 @@ export default function MapView() {
       initialViewState={viewport}
       {...settings}
       style={{ width: "100vw", height: "100vh" }}
-      mapStyle={MAPSTYLE}
-      mapboxAccessToken={TOKEN}
+      mapStyle={process.env.REACT_APP_MAPSTYLE}
+      mapboxAccessToken={process.env.REACT_APP_TOKEN}
       onResize={() => {
         viewport.height = window.innerHeight;
         viewport.width = window.innerWidth;
