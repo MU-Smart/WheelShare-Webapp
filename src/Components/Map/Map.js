@@ -21,6 +21,7 @@ const viewport = {
   maxPitch: 30,
 };
 
+
 const settings = {
   dragPan: true,
   dragRotate: false,
