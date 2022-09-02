@@ -32,9 +32,8 @@ const settings = {
 };
 
 /**
- * 
- * @returns 
- * 
+ * Creates the Map object to render all information.
+ * @returns reactmapgl map object 
  */
 
 // TODO - CONSIDER: using MapBoxGL Map instead of reactmapgl map
