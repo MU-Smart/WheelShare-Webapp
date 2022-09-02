@@ -21,7 +21,6 @@ const viewport = {
   maxPitch: 30,
 };
 
-
 const settings = {
   dragPan: true,
   dragRotate: false,
@@ -32,6 +31,11 @@ const settings = {
   doubleClickZoom: false,
 };
 
+/**
+ * 
+ * @returns 
+ * 
+ */
 
 // TODO - CONSIDER: using MapBoxGL Map instead of reactmapgl map
 export default function MapView() {
