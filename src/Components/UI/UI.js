@@ -30,14 +30,11 @@ export default function Controls() {
   const [showOverlay, setShowOverlay] = useState(false);
 
   const handleCloseOverlay = () => setShowOverlay(false);
-  const handleShowOverlay = () => {
-    console.log(process.env.REACT_APP_TOKEN);
-    setShowOverlay(true);
+  const handleShowOverlay = () => setShowOverlay(true);
 
-  }
   // ===== Helper Methods ===== \\
-  const checkValidAddress = (input) => {
-    return input !== null && input.length > 2;
+  const checkValidAddress = (address) => {
+    return address !== null && address.length > 2;
   };
 
   const easeTo = useCallback(
@@ -171,7 +168,7 @@ export default function Controls() {
           </div>
 
           <div id="Footer">
-            <Footer setOverlayFeedback={setOverlayFeedback} />
+            <Footer setOverlayFeedback={setOverlayFeedback} handleCloseOverlay={handleCloseOverlay}/>
           </div>
         </div>
       </Offcanvas>
