@@ -157,7 +157,9 @@ export default function Controls() {
         <div id="Offcanvas-Title">MyPath</div>
 
         <div id="UI-Content">
-          <SearchBar GetRoute={GetRoute} geocode={geocode} />
+          <div id="Searchbar">
+            <SearchBar GetRoute={GetRoute} geocode={geocode} />
+          </div>
 
           <div id="Slider">
             <Slider slope={slope} setSlope={setSlope} />
@@ -168,7 +170,10 @@ export default function Controls() {
           </div>
 
           <div id="Footer">
-            <Footer setOverlayFeedback={setOverlayFeedback} handleCloseOverlay={handleCloseOverlay}/>
+            <Footer
+              setOverlayFeedback={setOverlayFeedback}
+              handleCloseOverlay={handleCloseOverlay}
+            />
           </div>
         </div>
       </Offcanvas>
