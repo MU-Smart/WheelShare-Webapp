@@ -9,7 +9,7 @@ import DisplayOverlay from "./DisplayOverlay";
 import DisplayProfile from "./DisplayProfile";
 import Footer from "Components/UI_Components/Footer";
 import FeedbackBox from "Components/UI_Components/FeedbackBox";
-import Slider from "Components/UI_Components/Slider";
+import MySlider from "Components/UI_Components/Slider";
 import SearchBar from "Components/UI_Components/SearchBar";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -57,22 +57,18 @@ export default function Controls() {
         return;
       }
 
-      const args = {
-        method: "POST",
-        headers: { "Content-Type": "text/plain" },
-        body: address,
-      };
-
       fetch(
-        "http://testing.mypath.routemypath.com:8000/api/v1/external/address",
-        args
+        "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+          encodeURIComponent(address) + ".json?access_token=" + 
+          process.env.REACT_APP_TOKEN + "&limit=1"
       )
         .then((resp) => resp.json())
         .then((json) => {
           // Just incase
-          if (json.center !== undefined) {
+          let center = json.features[0].center;
+          if (center !== undefined) {
             marker.remove(mymap.getMap());
-            marker.setLngLat(json.center);
+            marker.setLngLat(center);
             marker.addTo(mymap.getMap());
             easeTo({ center: marker.getLngLat() });
           }
@@ -144,7 +140,7 @@ export default function Controls() {
 
       <DisplayOverlay map={mymap} slope={slope} />
 
-      <Button id="overlay-button" variant="primary" onClick={handleShowOverlay}>
+      <Button id="overlay-button" variant="primary" onClick={handleShowOverlay} onMouseEnter={handleShowOverlay}>
         Search Bar
       </Button>
 
@@ -160,7 +156,7 @@ export default function Controls() {
           <SearchBar GetRoute={GetRoute} geocode={geocode} />
 
           <div id="Slider">
-            <Slider slope={slope} setSlope={setSlope} />
+            <MySlider slope={slope} setSlope={setSlope} />
           </div>
 
           <div id="Profile">
@@ -168,7 +164,10 @@ export default function Controls() {
           </div>
 
           <div id="Footer">
-            <Footer setOverlayFeedback={setOverlayFeedback} handleCloseOverlay={handleCloseOverlay}/>
+            <Footer
+              setOverlayFeedback={setOverlayFeedback}
+              handleCloseOverlay={handleCloseOverlay}
+            />
           </div>
         </div>
       </Offcanvas>
