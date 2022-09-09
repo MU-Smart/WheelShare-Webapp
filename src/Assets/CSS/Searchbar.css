@@ -1,24 +1,35 @@
 #Search-Area {
   position: absolute;
-  width: 85%;
-
+  width: 90%;
   top: 18%;
 }
 
 .Searchbar-Search {
   height: 40px;
-  width: 100%;
-
-  right: 10%;
-  margin-bottom: 5%;
-
-  border-radius: 15px / 15px;
+  margin-bottom: 10px;
 }
 
 .Searchbar-Submit {
-  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
   height: 40px;
-  margin-left: 5%;
-
+  margin-top: 5px;
   border-radius: 5px;
+}
+
+.Dropdown {
+  position: relative;
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.DropdownItem {
+  max-width: 100%;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
