@@ -9,7 +9,7 @@ const OverlayButton = (props) => {
       onClick={() => ToggleSource(props.type, props.map, props.slope)}
     >
       <img
-        src={"http://routemypath.com/assets/img/favicon2.png"}
+        src={require("Assets/LayerStyles/" + props.id + "Icon.png")}
         alt="Map Toggle Icon"
         width="100%"
         height="100%"

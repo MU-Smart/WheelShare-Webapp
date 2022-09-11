@@ -17,6 +17,7 @@
     
     width: 10vh;
     height: 10vh;
+
 }
 
 #Surfaces {
@@ -30,6 +31,7 @@
     cursor: pointer;
     position: absolute;
     z-index: 1;
+
 }
 
 
@@ -56,6 +58,10 @@ input[type="checkbox"]:checked ~ #Overlay-Content {
 .Overlay-Button-Icon {
     width: 10vh;
     height: 10vh;
+
+    
+    border-color: black;
+    border-width: 15px;
 }
 
 .Overlay-Button-Text {

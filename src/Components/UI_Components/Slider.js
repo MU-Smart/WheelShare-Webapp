@@ -1,8 +1,9 @@
 import { Row } from "react-bootstrap";
+import Slider from "@mui/material/Slider";
 
 import { SLOPE_STEP, SLOPE_MIN, SLOPE_MAX } from "Constants.js";
 
-const Slider = ({ slope, setSlope }) => {
+const MySlider = ({ slope, setSlope }) => {
   const onSlopeChange = (evt) => {
     setSlope(evt.target.value);
   };
@@ -13,7 +14,7 @@ const Slider = ({ slope, setSlope }) => {
         {`Current Incline Upper Limit: ${slope}%`}
       </label>
       <Row>
-        <input
+        <Slider
           id="InclineSlider"
           className="Slider"
           type="range"
@@ -28,4 +29,4 @@ const Slider = ({ slope, setSlope }) => {
   );
 };
 
-export default Slider;
+export default MySlider;
