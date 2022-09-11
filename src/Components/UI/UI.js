@@ -9,7 +9,7 @@ import DisplayOverlay from "./DisplayOverlay";
 import DisplayProfile from "./DisplayProfile";
 import Footer from "Components/UI_Components/Footer";
 import FeedbackBox from "Components/UI_Components/FeedbackBox";
-import MySlider from "Components/UI_Components/Slider";
+import Slider from "Components/UI_Components/Slider";
 import SearchBar from "Components/UI_Components/SearchBar";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -156,7 +156,7 @@ export default function Controls() {
           <SearchBar GetRoute={GetRoute} geocode={geocode} />
 
           <div id="Slider">
-            <MySlider slope={slope} setSlope={setSlope} />
+            <Slider slope={slope} setSlope={setSlope} />
           </div>
 
           <div id="Profile">
