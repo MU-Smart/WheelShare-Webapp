@@ -6,7 +6,7 @@ import MyMarker from "Components/UI_Components/Marker";
 import mapboxgl from "mapbox-gl";
 import axios from "axios";
 
-const SearchBar = ({ GetRoute, geocode }) => {
+const SearchBar = ({ geocode }) => {
   const { register, handleSubmit, watch, setValue } = useForm();
   const watchStartAddress = watch("startAddress", "");
   const watchEndAddress = watch("endAddress", "");
@@ -15,16 +15,6 @@ const SearchBar = ({ GetRoute, geocode }) => {
   const [startAddressList, setStartAddressList] = useState([]);
   const [endAddressList, setEndAddressList] = useState([]);
 
-  const startMarker = MyMarker({
-    name: "Start Address",
-    center: new mapboxgl.LngLat(0, 0),
-  });
-
-  const endMarker = MyMarker({
-    name: "End Address",
-    center: new mapboxgl.LngLat(0, 0),
-  });
-
   const swapInputs = () => {
     const temp = watchStartAddress;
     setValue("startAddress", watchEndAddress);
@@ -32,8 +22,8 @@ const SearchBar = ({ GetRoute, geocode }) => {
   };
 
   const retrieveSuggestionList = async (address, startOrEnd) => {
-    const url =
-      "https://api.mapbox.com/geocoding/v5/mapbox.places/" + address + ".json";
+    const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + address + ".json";
+
     await axios({
       method: "get",
       url: url,
@@ -67,15 +57,9 @@ const SearchBar = ({ GetRoute, geocode }) => {
     retrieveSuggestionList(watchEndAddress, 1);
   }, [watchEndAddress]);
 
-  const onClickDropdownItemStart = (value) => {
-    setValue("startAddress", value);
-  };
-
   const onSubmit = (data) => {
-    GetRoute();
-    geocode(data.startAddress, startMarker);
-    geocode(data.endAddress, endMarker);
-    console.log(data)
+    geocode(data.startAddress, 0);
+    geocode(data.endAddress, 1);
   };
 
   return (
@@ -148,11 +132,13 @@ const SearchBar = ({ GetRoute, geocode }) => {
           Swap
         </Button>
 
-        <input
+        <Button
           type="submit"
           className="btn-primary Searchbar-Submit"
           value="Search"
-        />
+        >
+          Search
+        </Button>
       </div>
     </Form>
   );
