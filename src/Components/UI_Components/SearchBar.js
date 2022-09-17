@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Form, Button, Dropdown } from "react-bootstrap";
-import { get, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 
 const SearchBar = ({ geocode, updateMarker }) => {
@@ -20,7 +20,6 @@ const SearchBar = ({ geocode, updateMarker }) => {
   const [showEndDropDown, setShowEndDropDown] = useState(false);
   const [startAddressList, setStartAddressList] = useState([]);
   const [endAddressList, setEndAddressList] = useState([]);
-  const [endAddressCoordinate, setEndAddressCoordinate] = useState([]);
 
   const swapInputs = () => {
     const temp = watchStartAddress;
@@ -36,8 +35,7 @@ const SearchBar = ({ geocode, updateMarker }) => {
       method: "get",
       url: url,
       params: {
-        access_token:
-          "pk.eyJ1Ijoibmljb2thc3oiLCJhIjoiY2t6MjE2NXprMDF4czJ2b21uZjhqOXlhaCJ9.pzhG-dabniu4rtlDnkIVjw",
+        access_token: process.env.REACT_APP_TOKEN
       },
     })
       .then((res) => {
@@ -63,21 +61,20 @@ const SearchBar = ({ geocode, updateMarker }) => {
 
   useEffect(() => {
     retrieveSuggestionList(watchEndAddress, 1);
-    setEndAddressCoordinate(null);
   }, [watchEndAddress]);
 
   const onSubmit = (data) => {
     console.log(data);
     if (data.startAddressCoordinate.length === 0)  {
-      geocode(data.startAddress, 0);
+      geocode(data.startAddress, true);
     } else  {
-      updateMarker(0, data.startAddressCoordinate);
+      updateMarker(data.startAddressCoordinate, true);
     }
 
     if (data.endAddressCoordinate.length === 0)  {
-      geocode(data.endAddress, 1);
+      geocode(data.endAddress, false);
     } else  {
-      updateMarker(1, data.endAddressCoordinate);
+      updateMarker(data.endAddressCoordinate, false);
     }
   };
 
