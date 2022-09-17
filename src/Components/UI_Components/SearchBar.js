@@ -1,19 +1,26 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Form, Button, Dropdown } from "react-bootstrap";
-import { useForm } from "react-hook-form";
-import MyMarker from "Components/UI_Components/Marker";
-import mapboxgl from "mapbox-gl";
+import { get, useForm } from "react-hook-form";
 import axios from "axios";
 
-const SearchBar = ({ geocode }) => {
-  const { register, handleSubmit, watch, setValue } = useForm();
+const SearchBar = ({ geocode, updateMarker }) => {
+  const { register, handleSubmit, watch, setValue } = useForm({
+    defaultValues: {
+      startAddress: "",
+      endAddress: "",
+      startAddressCoordinate: [],
+      endAddressCoordinate: [],
+    },
+  });
+
   const watchStartAddress = watch("startAddress", "");
   const watchEndAddress = watch("endAddress", "");
   const [showStartDropDown, setShowStartDropDown] = useState(false);
   const [showEndDropDown, setShowEndDropDown] = useState(false);
   const [startAddressList, setStartAddressList] = useState([]);
   const [endAddressList, setEndAddressList] = useState([]);
+  const [endAddressCoordinate, setEndAddressCoordinate] = useState([]);
 
   const swapInputs = () => {
     const temp = watchStartAddress;
@@ -22,7 +29,8 @@ const SearchBar = ({ geocode }) => {
   };
 
   const retrieveSuggestionList = async (address, startOrEnd) => {
-    const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + address + ".json";
+    const url =
+      "https://api.mapbox.com/geocoding/v5/mapbox.places/" + address + ".json";
 
     await axios({
       method: "get",
@@ -35,10 +43,10 @@ const SearchBar = ({ geocode }) => {
       .then((res) => {
         const suggestedList = [];
         for (let elem of res.data.features) {
-          suggestedList.push(elem.place_name);
+          suggestedList.push([elem.place_name, elem.center]);
         }
 
-        if (startOrEnd == 0) {
+        if (startOrEnd === 0) {
           setStartAddressList(suggestedList);
         } else {
           setEndAddressList(suggestedList);
@@ -55,11 +63,22 @@ const SearchBar = ({ geocode }) => {
 
   useEffect(() => {
     retrieveSuggestionList(watchEndAddress, 1);
+    setEndAddressCoordinate(null);
   }, [watchEndAddress]);
 
   const onSubmit = (data) => {
-    geocode(data.startAddress, 0);
-    geocode(data.endAddress, 1);
+    console.log(data);
+    if (data.startAddressCoordinate.length === 0)  {
+      geocode(data.startAddress, 0);
+    } else  {
+      updateMarker(0, data.startAddressCoordinate);
+    }
+
+    if (data.endAddressCoordinate.length === 0)  {
+      geocode(data.endAddress, 1);
+    } else  {
+      updateMarker(1, data.endAddressCoordinate);
+    }
   };
 
   return (
@@ -70,7 +89,11 @@ const SearchBar = ({ geocode }) => {
           className="Searchbar-Search"
           id="startLocation"
           placeholder="Starting point"
-          {...register("startAddress")}
+          {...register("startAddress", {
+            onChange: (e) => {
+              setValue("startAddressCoordinate", []);
+            },
+          })}
           onFocus={() => {
             setShowStartDropDown(true);
           }}
@@ -81,14 +104,16 @@ const SearchBar = ({ geocode }) => {
         {showStartDropDown && (
           <Dropdown.Menu className="Dropdown" show>
             <Dropdown.Header>Start Location Suggestions</Dropdown.Header>
-            {startAddressList.map((location) => {
+            {startAddressList.map((locationList, index) => {
               return (
                 <Dropdown.Item
+                  key={index}
                   onClick={() => {
-                    setValue("startAddress", location);
+                    setValue("startAddress", locationList[0]);
+                    setValue("startAddressCoordinate", locationList[1]);
                   }}
                 >
-                  {location}
+                  {locationList[0]}
                 </Dropdown.Item>
               );
             })}
@@ -100,7 +125,11 @@ const SearchBar = ({ geocode }) => {
           className="Searchbar-Search"
           id="endLocation"
           placeholder="Ending point"
-          {...register("endAddress")}
+          {...register("endAddress", {
+            onChange: (e) => {
+              setValue("endAddressCoordinate", []);
+            },
+          })}
           onFocus={() => {
             setShowEndDropDown(true);
           }}
@@ -112,16 +141,16 @@ const SearchBar = ({ geocode }) => {
         {showEndDropDown && (
           <Dropdown.Menu className="Dropdown" show>
             <Dropdown.Header>End Location Suggestions</Dropdown.Header>
-            {endAddressList.map((location, index) => {
+            {endAddressList.map((locationList, index) => {
               return (
                 <Dropdown.Item
-                  as="button"
                   key={index}
                   onClick={() => {
-                    setValue("endAddress", location);
+                    setValue("endAddress", locationList[0]);
+                    setValue("endAddressCoordinate", locationList[1]);
                   }}
                 >
-                  {location}
+                  {locationList[0]}
                 </Dropdown.Item>
               );
             })}

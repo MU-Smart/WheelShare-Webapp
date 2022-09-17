@@ -71,14 +71,10 @@ export default function Controls() {
       return;
     }
 
-    console.log(address)
-
     const url =
       "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
       encodeURIComponent(address) +
       ".json";
-    
-      console.log(url)
     axios({
       method: "get",
       url: url,
@@ -90,26 +86,28 @@ export default function Controls() {
     })
       .then(async (res) => {
         let center = res.data.features[0].center;
-        console.log(center);
-        console.log(res.data);
         if (center !== undefined) {
-          if (startOrEnd == 0) {
-            startMarker.remove();
-            startMarker.setLngLat(center);
-            startMarker.addTo(mymap.getMap());
-            easeTo({ center: startMarker.getLngLat() });
-          } else {
-            endMarker.remove();
-            endMarker.setLngLat(center);
-            endMarker.addTo(mymap.getMap());
-            easeTo({ center: endMarker.getLngLat() });
-          }
+          updateMarker(startOrEnd, center);
         }
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const updateMarker = (startOrEnd, coordinates) => {
+    if (startOrEnd == 0) {
+      startMarker.remove();
+      startMarker.setLngLat(coordinates);
+      startMarker.addTo(mymap.getMap());
+      easeTo({ center: startMarker.getLngLat() });
+    } else {
+      endMarker.remove();
+      endMarker.setLngLat(coordinates);
+      endMarker.addTo(mymap.getMap());
+      easeTo({ center: endMarker.getLngLat() });
+    }
+  }
 
   useEffect(() => {
     ToggleSource("slopeChange", mymap, slope);
@@ -138,7 +136,7 @@ export default function Controls() {
 
         <div id="UI-Content">
           <div id="Searchbar">
-            <SearchBar geocode={geocode} />
+            <SearchBar geocode={geocode} updateMarker={updateMarker}/>
           </div>
 
           <div id="Slider">
