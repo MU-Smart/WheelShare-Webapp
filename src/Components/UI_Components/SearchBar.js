@@ -64,16 +64,15 @@ const SearchBar = ({ geocode, updateMarker, startAddress, endAddress, updateAddr
 
   useEffect(() => {
     retrieveSuggestionList(watchStartAddress, 0);
-    updateAddress(watchStartAddress, 0);
+    updateAddress(watchStartAddress, true);
   }, [watchStartAddress]);
 
   useEffect(() => {
     retrieveSuggestionList(watchEndAddress, 1);
-    updateAddress(watchEndAddress, 1);
+    updateAddress(watchEndAddress, false);
   }, [watchEndAddress]);
 
   const onSubmit = (data) => {
-    console.log(data);
     if (data.startAddressCoordinate.length === 0)  {
       geocode(data.startAddress, true);
     } else  {
@@ -117,7 +116,7 @@ const SearchBar = ({ geocode, updateMarker, startAddress, endAddress, updateAddr
                   onClick={() => {
                     setValue("startAddress", locationList[0]);
                     setValue("startAddressCoordinate", locationList[1]);
-                    updateAddress(locationList[0], 0);
+                    updateAddress(locationList[0], true);
                   }}
                 >
                   {locationList[0]}
@@ -155,7 +154,7 @@ const SearchBar = ({ geocode, updateMarker, startAddress, endAddress, updateAddr
                   onClick={() => {
                     setValue("endAddress", locationList[0]);
                     setValue("endAddressCoordinate", locationList[1]);
-                    updateAddress(locationList[0], 1);
+                    updateAddress(locationList[0], false);
                   }}
                 >
                   {locationList[0]}

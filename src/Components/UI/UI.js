@@ -47,6 +47,8 @@ export default function Controls() {
   };
 
   const zoomEase = () => {
+    console.log(startAddress);
+    console.log(endAddress);
     if (
       startMarker.getLngLat() !== undefined &&
       endMarker.getLngLat() !== undefined
@@ -118,10 +120,9 @@ export default function Controls() {
   };
 
   const updateAddress = (address, isStart) => {
-    if (isStart === 0) {
+    if (isStart) {
       startAddress = address;
-    }
-    if (isStart === 1) {
+    } else {
       endAddress = address;
     }
   }
@@ -139,7 +140,7 @@ export default function Controls() {
 
       <DisplayOverlay map={mymap} slope={slope} />
 
-      <Button id="overlay-button" variant="primary" onClick={handleShowOverlay}>
+      <Button id="Overlay-button" variant="primary" onClick={handleShowOverlay}>
         Search Bar
       </Button>
 
