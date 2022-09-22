@@ -3,9 +3,8 @@ import { Button, Offcanvas } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useMap } from "react-map-gl";
 import axios from "axios";
-import mapboxgl from "mapbox-gl";
 
-import { DEFAULT_SLOPE, EASE_DUR, MIN_ZOOM, MAX_ZOOM } from "Constants.js";
+import { DEFAULT_SLOPE } from "Constants.js";
 import ToggleSource from "Components/Functions/ToggleSource";
 import DisplayOverlay from "./DisplayOverlay";
 import DisplayProfile from "./DisplayProfile";
@@ -13,7 +12,7 @@ import Footer from "Components/UI_Components/Footer";
 import FeedbackBox from "Components/UI_Components/FeedbackBox";
 import Slider from "Components/UI_Components/Slider";
 import SearchBar from "Components/UI_Components/SearchBar";
-import MyMarker from "Components/UI_Components/Marker";
+import Marker from "Components/UI_Components/Marker";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "Assets/CSS/UI.css";
@@ -23,15 +22,10 @@ import "Assets/CSS/Profile.css";
 import "Assets/CSS/Slider.css";
 import "Assets/CSS/Searchbar.css";
 
-const startMarker = MyMarker({
-  name: "Start Address",
-  center: new mapboxgl.LngLat(0, 0),
-});
-
-const endMarker = MyMarker({
-  name: "End Address",
-  center: new mapboxgl.LngLat(0, 0),
-});
+const startMarker = Marker();
+let startAddress = null;
+const endMarker = Marker();
+let endAddress = null;
 
 export default function Controls() {
   const { mymap } = useMap();
@@ -52,18 +46,32 @@ export default function Controls() {
     return address !== null && address.length > 2;
   };
 
-  const zoomEase = (props) => {
-    // get maps current zoom
-    const mapZoom = mymap.getMap().getZoom();
+  const zoomEase = () => {
+    if (
+      startMarker.getLngLat() !== undefined &&
+      endMarker.getLngLat() !== undefined
+    ) {
+      mymap.fitBounds([startMarker.getLngLat(), endMarker.getLngLat()], {
+        padding: 100, duration: 1000
+      });
+      return;
+    }
 
-    // makes sure map zoom stays within MIN and MAX values
-    const setZoom = Math.max(Math.min(mapZoom, MAX_ZOOM), MIN_ZOOM);
-    console.log(startMarker.getLngLat());
-    console.log(endMarker.getLngLat());
-    mymap.fitBounds([startMarker.getLngLat(), endMarker.getLngLat()], {
-      padding: {top: 10, bottom:25, left: 15, right: 5}
-    })
-    // mymap.easeTo({ center: props.center, duration: EASE_DUR, zoom: setZoom });
+    if (startMarker.getLngLat() !== undefined) {
+      mymap.easeTo({
+        center: startMarker.getLngLat(),
+        zoom: 15,
+        duration: 1000,
+      });
+    }
+
+    if (endMarker.getLngLat() !== undefined) {
+      mymap.easeTo({
+        center: endMarker.getLngLat(),
+        zoom: 9,
+        duration: 1000,
+      });
+    }
   };
 
   // Requests coordinates for Address provided
@@ -100,18 +108,23 @@ export default function Controls() {
       startMarker.remove();
       startMarker.setLngLat(coordinates);
       startMarker.addTo(mymap.getMap());
-      console.log('start')
-      console.log(startMarker.getLngLat())
-      zoomEase({ center: startMarker.getLngLat() });
-    } else {
+    }
+    if (!isStart) {
       endMarker.remove();
       endMarker.setLngLat(coordinates);
       endMarker.addTo(mymap.getMap());
-      console.log('end')
-      console.log(endMarker.getLngLat())
-      zoomEase({ center: endMarker.getLngLat() });
     }
+    zoomEase();
   };
+
+  const updateAddress = (address, isStart) => {
+    if (isStart === 0) {
+      startAddress = address;
+    }
+    if (isStart === 1) {
+      endAddress = address;
+    }
+  }
 
   useEffect(() => {
     ToggleSource("slopeChange", mymap, slope);
@@ -140,7 +153,7 @@ export default function Controls() {
 
         <div id="UI-Content">
           <div id="Searchbar">
-            <SearchBar geocode={geocode} updateMarker={updateMarker} />
+            <SearchBar geocode={geocode} updateMarker={updateMarker} startAddress={startAddress} endAddress={endAddress} updateAddress={updateAddress}/>
           </div>
 
           <div id="Slider">

@@ -4,14 +4,21 @@ import { Form, Button, Dropdown } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
-const SearchBar = ({ geocode, updateMarker }) => {
+const SearchBar = ({ geocode, updateMarker, startAddress, endAddress, updateAddress }) => {
+  const init = () => {
+    const start = startAddress === null ? "" : startAddress;
+    const end = endAddress === null ? "" : endAddress;
+
+    return {
+        startAddress: start,
+        endAddress: end,
+        startAddressCoordinate: [],
+        endAddressCoordinate: [],
+    }
+  }
+
   const { register, handleSubmit, watch, setValue } = useForm({
-    defaultValues: {
-      startAddress: "",
-      endAddress: "",
-      startAddressCoordinate: [],
-      endAddressCoordinate: [],
-    },
+    defaultValues: init(),
   });
 
   const watchStartAddress = watch("startAddress", "");
@@ -57,10 +64,12 @@ const SearchBar = ({ geocode, updateMarker }) => {
 
   useEffect(() => {
     retrieveSuggestionList(watchStartAddress, 0);
+    updateAddress(watchStartAddress, 0);
   }, [watchStartAddress]);
 
   useEffect(() => {
     retrieveSuggestionList(watchEndAddress, 1);
+    updateAddress(watchEndAddress, 1);
   }, [watchEndAddress]);
 
   const onSubmit = (data) => {
@@ -87,7 +96,7 @@ const SearchBar = ({ geocode, updateMarker }) => {
           id="startLocation"
           placeholder="Starting point"
           {...register("startAddress", {
-            onChange: (e) => {
+            onChange: () => {
               setValue("startAddressCoordinate", []);
             },
           })}
@@ -108,6 +117,7 @@ const SearchBar = ({ geocode, updateMarker }) => {
                   onClick={() => {
                     setValue("startAddress", locationList[0]);
                     setValue("startAddressCoordinate", locationList[1]);
+                    updateAddress(locationList[0], 0);
                   }}
                 >
                   {locationList[0]}
@@ -145,6 +155,7 @@ const SearchBar = ({ geocode, updateMarker }) => {
                   onClick={() => {
                     setValue("endAddress", locationList[0]);
                     setValue("endAddressCoordinate", locationList[1]);
+                    updateAddress(locationList[0], 1);
                   }}
                 >
                   {locationList[0]}
