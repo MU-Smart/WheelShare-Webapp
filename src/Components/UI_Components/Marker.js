@@ -8,7 +8,6 @@ const Marker = () => {
     anchor: "bottom",
     pitchAlignment: "map",
     draggable: true,
-    name: "Hello"
   };
 
   // // Create Image Element for marker
