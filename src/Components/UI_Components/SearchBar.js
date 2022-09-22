@@ -2,28 +2,31 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { Form, Button, Dropdown } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import MyMarker from "Components/UI_Components/Marker";
-import mapboxgl from "mapbox-gl";
 import axios from "axios";
 
-const SearchBar = ({ GetRoute, geocode }) => {
-  const { register, handleSubmit, watch, setValue } = useForm();
+const SearchBar = ({ geocode, updateMarker, startAddress, endAddress, updateAddress }) => {
+  const init = () => {
+    const start = startAddress === null ? "" : startAddress;
+    const end = endAddress === null ? "" : endAddress;
+
+    return {
+        startAddress: start,
+        endAddress: end,
+        startAddressCoordinate: [],
+        endAddressCoordinate: [],
+    }
+  }
+
+  const { register, handleSubmit, watch, setValue } = useForm({
+    defaultValues: init(),
+  });
+
   const watchStartAddress = watch("startAddress", "");
   const watchEndAddress = watch("endAddress", "");
   const [showStartDropDown, setShowStartDropDown] = useState(false);
   const [showEndDropDown, setShowEndDropDown] = useState(false);
   const [startAddressList, setStartAddressList] = useState([]);
   const [endAddressList, setEndAddressList] = useState([]);
-
-  const startMarker = MyMarker({
-    name: "Start Address",
-    center: new mapboxgl.LngLat(0, 0),
-  });
-
-  const endMarker = MyMarker({
-    name: "End Address",
-    center: new mapboxgl.LngLat(0, 0),
-  });
 
   const swapInputs = () => {
     const temp = watchStartAddress;
@@ -34,21 +37,21 @@ const SearchBar = ({ GetRoute, geocode }) => {
   const retrieveSuggestionList = async (address, startOrEnd) => {
     const url =
       "https://api.mapbox.com/geocoding/v5/mapbox.places/" + address + ".json";
+
     await axios({
       method: "get",
       url: url,
       params: {
-        access_token:
-          "pk.eyJ1Ijoibmljb2thc3oiLCJhIjoiY2t6MjE2NXprMDF4czJ2b21uZjhqOXlhaCJ9.pzhG-dabniu4rtlDnkIVjw",
+        access_token: process.env.REACT_APP_TOKEN
       },
     })
       .then((res) => {
         const suggestedList = [];
         for (let elem of res.data.features) {
-          suggestedList.push(elem.place_name);
+          suggestedList.push([elem.place_name, elem.center]);
         }
 
-        if (startOrEnd == 0) {
+        if (startOrEnd === 0) {
           setStartAddressList(suggestedList);
         } else {
           setEndAddressList(suggestedList);
@@ -61,21 +64,27 @@ const SearchBar = ({ GetRoute, geocode }) => {
 
   useEffect(() => {
     retrieveSuggestionList(watchStartAddress, 0);
+    updateAddress(watchStartAddress, 0);
   }, [watchStartAddress]);
 
   useEffect(() => {
     retrieveSuggestionList(watchEndAddress, 1);
+    updateAddress(watchEndAddress, 1);
   }, [watchEndAddress]);
 
-  const onClickDropdownItemStart = (value) => {
-    setValue("startAddress", value);
-  };
-
   const onSubmit = (data) => {
-    GetRoute();
-    geocode(data.startAddress, startMarker);
-    geocode(data.endAddress, endMarker);
-    console.log(data)
+    console.log(data);
+    if (data.startAddressCoordinate.length === 0)  {
+      geocode(data.startAddress, true);
+    } else  {
+      updateMarker(data.startAddressCoordinate, true);
+    }
+
+    if (data.endAddressCoordinate.length === 0)  {
+      geocode(data.endAddress, false);
+    } else  {
+      updateMarker(data.endAddressCoordinate, false);
+    }
   };
 
   return (
@@ -86,7 +95,11 @@ const SearchBar = ({ GetRoute, geocode }) => {
           className="Searchbar-Search"
           id="startLocation"
           placeholder="Starting point"
-          {...register("startAddress")}
+          {...register("startAddress", {
+            onChange: () => {
+              setValue("startAddressCoordinate", []);
+            },
+          })}
           onFocus={() => {
             setShowStartDropDown(true);
           }}
@@ -97,14 +110,17 @@ const SearchBar = ({ GetRoute, geocode }) => {
         {showStartDropDown && (
           <Dropdown.Menu className="Dropdown" show>
             <Dropdown.Header>Start Location Suggestions</Dropdown.Header>
-            {startAddressList.map((location) => {
+            {startAddressList.map((locationList, index) => {
               return (
                 <Dropdown.Item
+                  key={index}
                   onClick={() => {
-                    setValue("startAddress", location);
+                    setValue("startAddress", locationList[0]);
+                    setValue("startAddressCoordinate", locationList[1]);
+                    updateAddress(locationList[0], 0);
                   }}
                 >
-                  {location}
+                  {locationList[0]}
                 </Dropdown.Item>
               );
             })}
@@ -116,7 +132,11 @@ const SearchBar = ({ GetRoute, geocode }) => {
           className="Searchbar-Search"
           id="endLocation"
           placeholder="Ending point"
-          {...register("endAddress")}
+          {...register("endAddress", {
+            onChange: (e) => {
+              setValue("endAddressCoordinate", []);
+            },
+          })}
           onFocus={() => {
             setShowEndDropDown(true);
           }}
@@ -128,16 +148,17 @@ const SearchBar = ({ GetRoute, geocode }) => {
         {showEndDropDown && (
           <Dropdown.Menu className="Dropdown" show>
             <Dropdown.Header>End Location Suggestions</Dropdown.Header>
-            {endAddressList.map((location, index) => {
+            {endAddressList.map((locationList, index) => {
               return (
                 <Dropdown.Item
-                  as="button"
                   key={index}
                   onClick={() => {
-                    setValue("endAddress", location);
+                    setValue("endAddress", locationList[0]);
+                    setValue("endAddressCoordinate", locationList[1]);
+                    updateAddress(locationList[0], 1);
                   }}
                 >
-                  {location}
+                  {locationList[0]}
                 </Dropdown.Item>
               );
             })}
@@ -148,11 +169,13 @@ const SearchBar = ({ GetRoute, geocode }) => {
           Swap
         </Button>
 
-        <input
+        <Button
           type="submit"
           className="btn-primary Searchbar-Submit"
           value="Search"
-        />
+        >
+          Search
+        </Button>
       </div>
     </Form>
   );
