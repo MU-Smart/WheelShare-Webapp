@@ -10,7 +10,7 @@ import axios from "axios";
  * * 1 clone is the form's field -> keep track the changes and use properties from react-hook-form
  * ! To keep it simple, the object received from the parents is ONLY limit to init the value
  * ! The form will update its own fields, then call the parents method so the parent can update their variable
- * TODO: Try to reduce to using only the clone from the parent. This might not be possible though
+ * TODO: Try to reduce to using only the clone from the parent. This might not be possible though.
  */
 
 const SearchBar = ({ geocode, startMarker, endMarker, updateMarker, startAddress, endAddress, updateAddress }) => {
