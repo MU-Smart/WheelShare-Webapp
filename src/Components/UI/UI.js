@@ -73,7 +73,6 @@ export default function Controls() {
       startMarker.getLngLat() !== undefined &&
       endMarker.getLngLat() !== undefined
     ) {
-      console.log(0)
       mymap.fitBounds([startMarker.getLngLat(), endMarker.getLngLat()], {
         padding: 100,
         duration: 1000,
@@ -137,7 +136,7 @@ export default function Controls() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 

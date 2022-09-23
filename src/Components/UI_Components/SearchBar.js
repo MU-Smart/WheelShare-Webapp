@@ -10,6 +10,7 @@ import axios from "axios";
  * * 1 clone is the form's field -> keep track the changes and use properties from react-hook-form
  * ! To keep it simple, the object received from the parents is ONLY limit to init the value
  * ! The form will update its own fields, then call the parents method so the parent can update their variable
+ * ! The form will only call the parents method onSubmit -> this is by design to avoid bugs!!!
  * TODO: Try to reduce to using only the clone from the parent. This might not be possible though.
  */
 
@@ -39,7 +40,8 @@ const SearchBar = ({ geocode, startMarker, endMarker, updateMarker, startAddress
 
   //  ======= Helper Functions ======= \\
   /**
-   * Swap values of the two fields and their ascociating 
+   * Swap values of the two fields and their associating field value
+   * ! Be careful with this. This is a buggy function!
    */
   const swapInputs = () => {
     const tempAddress = watchStartAddress;
@@ -51,11 +53,14 @@ const SearchBar = ({ geocode, startMarker, endMarker, updateMarker, startAddress
   };
 
   /**
-   * 
-   * @param {*} address 
-   * @param {*} startOrEnd 
+   * Retreive a list of suggestions based on the address input from the user
+   * @param {*} address the input from the user
+   * @param {*} isStart start or end. true if start, false if end.
+   * TODO: Improve the suggestion result. Mapbox stinks but let's try our best.
+   * TODO: https://docs.mapbox.com/api/search/geocoding/
+   * ! This is an async function.
    */
-  const retrieveSuggestionList = async (address, startOrEnd) => {
+  const retrieveSuggestionList = async (address, isStart) => {
     const url =
       "https://api.mapbox.com/geocoding/v5/mapbox.places/" + address + ".json";
 
@@ -72,46 +77,62 @@ const SearchBar = ({ geocode, startMarker, endMarker, updateMarker, startAddress
           suggestedList.push([elem.place_name, elem.center]);
         }
 
-        if (startOrEnd === 0) {
+        if (isStart) {
           setStartAddressList(suggestedList);
         } else {
           setEndAddressList(suggestedList);
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 
-  useEffect(() => {
-    retrieveSuggestionList(watchStartAddress, 0);
-    updateAddress(watchStartAddress, true);
-  }, [watchStartAddress]);
-
-  useEffect(() => {
-    retrieveSuggestionList(watchEndAddress, 1);
-    updateAddress(watchEndAddress, false);
-  }, [watchEndAddress]);
-
+  /**
+   * Function to handle submit event
+   * * This is the only place where parent's functions are called
+   * ! Let's keep it this way to avoid bugs because the OffCanvas will
+   * ! automatically unmount when hidden, causing data lost.
+   * @param {*} data react-hook-form data result when submitted the form
+   */
   const onSubmit = (data) => {
-    console.log(data);
+    updateAddress(watchStartAddress, true);
+    updateAddress(watchEndAddress, false);
+    
+    /**
+     * If the user choose an item from a dropdown -> Use the associating coordinate for the marker
+     * If the user did not -> Use the text from the box
+     * ! NOTE: We cannot use text when user pick an item because Mapbox Geocoding API will messed up the whole thing
+     * ? For example, if the user choose "Miami University, S Campus Ave., Oxford, Ohio 45056, United States"
+     * ? and we put the same text to the API, it will return "Oxford, Ohio" -> Which is so stupid because it will just match 
+     * ? the later part of the address string. But we have no choice but to perform some trick to overcome this.  
+     */
+
     if (data.startAddressCoordinate.length === 0)  {
-      console.log(0)
       geocode(data.startAddress, true);
     } else  {
-      console.log(1)
       updateMarker(data.startAddressCoordinate, true);
     }
 
     if (data.endAddressCoordinate.length === 0)  {
-      console.log(2)
       geocode(data.endAddress, false);
     } else  {
-      console.log(3)
       updateMarker(data.endAddressCoordinate, false);
     }
   };
 
+  /**
+   * Retrieve a new suggestion list whenever the user type in some new inputs
+   */
+  useEffect(() => {
+    retrieveSuggestionList(watchStartAddress, true);
+  }, [watchStartAddress]);
+
+  useEffect(() => {
+    retrieveSuggestionList(watchEndAddress, false);
+  }, [watchEndAddress]);
+
+    //  ======= Return ======= \\
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <div id="Searchbar-Area">
