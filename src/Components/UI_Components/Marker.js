@@ -10,7 +10,6 @@ const Marker = () => {
     draggable: true,
   };
 
-  // // Create Image Element for marker
   const pin = document.createElement("img");
   pin.src = pinImage;
 
