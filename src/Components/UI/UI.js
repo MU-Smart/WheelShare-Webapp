@@ -114,6 +114,7 @@ export default function Controls() {
         endMarker.remove();
         endMarker = Marker();
       }
+      zoomEase();
       return;
     }
 

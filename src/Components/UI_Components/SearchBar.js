@@ -96,18 +96,18 @@ const SearchBar = ({ geocode, startMarker, endMarker, updateMarker, startAddress
   const onSubmit = (data) => {
     console.log(data);
     if (data.startAddressCoordinate.length === 0)  {
-      // console.log(0)
+      console.log(0)
       geocode(data.startAddress, true);
     } else  {
-      // console.log(1)
+      console.log(1)
       updateMarker(data.startAddressCoordinate, true);
     }
 
     if (data.endAddressCoordinate.length === 0)  {
-      // console.log(2)
+      console.log(2)
       geocode(data.endAddress, false);
     } else  {
-      // console.log(3)
+      console.log(3)
       updateMarker(data.endAddressCoordinate, false);
     }
   };
