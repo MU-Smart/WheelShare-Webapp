@@ -1,12 +1,11 @@
 #Slider {
-  position: absolute;
+  margin: 0 auto;
   width: 80%;
   left: 10%;
-  top: 30%;
 }
 
 .Slider-Text {
-  text-align: left;
+  text-align: center;
   width: 100%;
   margin-top: 15%;
   margin-bottom: 3%;
