@@ -68,7 +68,11 @@ const SearchBar = ({ geocode, startMarker, endMarker, updateMarker, startAddress
       method: "get",
       url: url,
       params: {
-        access_token: process.env.REACT_APP_TOKEN
+        access_token: process.env.REACT_APP_TOKEN,
+        proximity: "-84.734793,39.5145225",
+        autocomplete: false,
+        country: 'US',
+        type: "place"
       },
     })
       .then((res) => {
