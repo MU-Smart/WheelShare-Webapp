@@ -19,7 +19,7 @@
   border-color: black;
   border-radius: 5px;  
   background: #beccc2;
-  background-image: linear-gradient(to right,green, yellow,red);
+  background-image: linear-gradient(to left,green, yellow,red);
   outline: none;
   opacity: 0.7;
   -webkit-transition: .2s;
