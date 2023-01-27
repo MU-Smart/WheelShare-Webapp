@@ -58,8 +58,8 @@ const SearchBar = ({ geocode, startMarker, endMarker, updateMarker, startAddress
    * @param {*} isStart start or end. true if start, false if end.
    * TODO: Improve the suggestion result. Mapbox stinks but let's try our best.
    * TODO: https://docs.mapbox.com/api/search/geocoding/
-   * ! This is an async function.
-   */
+  */
+  
   const retrieveSuggestionList = async (address, isStart) => {
     const url =
       "https://api.mapbox.com/geocoding/v5/mapbox.places/" + address + ".json";
