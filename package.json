@@ -19,7 +19,7 @@
     "fix": "0.0.6",
     "mapbox-gl": "^2.9.2",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.4.0",
+    "react-bootstrap": "^2.7.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.34.2",
     "react-map-gl": "^7.0.17",
