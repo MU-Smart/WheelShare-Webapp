@@ -4,7 +4,15 @@ import "../../Assets/CSS/Login.css";
 
 
 const LoginBox = ({ setOverlayLogin, handleCloseOverlay }) => {
+  /**
+   * React hook form integration
+   */
   const { register, handleSubmit } = useForm();
+
+  /**
+   * Function to handle the submission of the signin form
+   * @param {Object} data Data that is gather from the signin form.
+   */
   const onSubmit = (data) => {
     console.log(data);
     setOverlayLogin(false);
@@ -13,33 +21,42 @@ const LoginBox = ({ setOverlayLogin, handleCloseOverlay }) => {
   return (
     <Modal show={setOverlayLogin} onHide={() => setOverlayLogin(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Login to Wheelshare</Modal.Title>
+        <Modal.Title>Welcome Back</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Username or Email address</Form.Label>
-            <Form.Control
+          <div className="mb-3">
+            <label>Email address</label>
+            <input
               type="email"
+              className="form-control"
               placeholder="Enter email"
-              {...register("email")} />
-          </Form.Group>
-
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
+            />
+          </div>
+          <div className="mb-3">
+            <label>Password</label>
+            <input
               type="password"
-              placeholder="Password"
-              {...register("password")} />
-          </Form.Group>
+              className="form-control"
+              placeholder="Enter password"
+            />
+          </div>
+          <div className="mb-3">
+          </div>
+          <div className="d-grid">
+            <Button type="submit" className="btn btn-primary" onClick={handleSubmit(onSubmit)}>
+              Sign in
+            </Button>
+          </div>
+          <p className="forgot-password text-right mb-0 mt-1">
+            Forgot <a href="#">password?</a>
+          </p>
         </Form>
-        <Button variant="primary" onClick={handleSubmit(onSubmit)}>Login</Button>
       </Modal.Body>
-      <Modal.Footer>
-        <div>
-          Don't have an account? Sign-up here:
-          <Button variant="secondary" onClick={handleSubmit(onSubmit)}>Signup</Button>
-        </div>
+      <Modal.Footer class="text-center mb-3">
+        <p className="text-right mb-0">
+          New here? <a href="#">Make an account</a>
+        </p>
       </Modal.Footer>
     </Modal>
   );
