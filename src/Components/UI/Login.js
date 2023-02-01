@@ -31,6 +31,13 @@ const LoginBox = ({ setOverlayLogin, handleCloseOverlay }) => {
               type="email"
               className="form-control"
               placeholder="Enter email"
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  message: 'Please enter a valid email',
+                },
+              })}
             />
           </div>
           <div className="mb-3">
@@ -39,6 +46,7 @@ const LoginBox = ({ setOverlayLogin, handleCloseOverlay }) => {
               type="password"
               className="form-control"
               placeholder="Enter password"
+              {...register("password")}
             />
           </div>
           <div className="mb-3">
