@@ -4,7 +4,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import "../../Assets/CSS/Login.css";
 
 
-const Login = ({ setOverlayLogin, setOverlaySignin }) => {
+const Signup = ({ setOverlayLogin, handleCloseOverlay }) => {
   /**
    * React hook form integration
    */
@@ -22,7 +22,7 @@ const Login = ({ setOverlayLogin, setOverlaySignin }) => {
   return (
     <Modal show={setOverlayLogin} onHide={() => setOverlayLogin(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Welcome Back</Modal.Title>
+        <Modal.Title>Make an Account</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
@@ -76,11 +76,11 @@ const Login = ({ setOverlayLogin, setOverlaySignin }) => {
       </Modal.Body>
       <Modal.Footer class="text-center mb-3">
         <p className="text-right mb-0">
-          New here? <a href="#">Make an account</a>
+          New here? <a href="#" >Make an account</a>
         </p>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default Login;
+export default Signup;

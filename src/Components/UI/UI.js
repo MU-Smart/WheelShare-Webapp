@@ -8,7 +8,8 @@ import { DEFAULT_SLOPE } from "Constants.js";
 import ToggleSource from "Components/Functions/ToggleSource";
 import DisplayOverlay from "./DisplayOverlay";
 import DisplayProfile from "./DisplayProfile";
-import LoginBox from "./Login";
+import Login from "./Login";
+import Signup from "./Signup";
 import Footer from "Components/UI_Components/Footer";
 import FeedbackBox from "Components/UI_Components/FeedbackBox";
 import Slider from "Components/UI_Components/Slider";
@@ -45,6 +46,8 @@ export default function Controls() {
 
   const [overlayFeedback, setOverlayFeedback] = useState(false);
   const [overlayLogin, setOverlayLogin] = useState(false);
+  const [overlaySignup, setOverlaySignup] = useState(false);
+  const [overlayForgotPassword, setOverlayForgotPassword] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
   const handleCloseOverlay = () => {
@@ -192,7 +195,11 @@ export default function Controls() {
       )}
 
       {overlayLogin && (
-        <LoginBox setOverlayLogin={setOverlayLogin} />
+        <Login setOverlayLogin={setOverlayLogin} />
+      )}
+
+      {overlaySignup && (
+        <Signup setOverlaySignup={setOverlaySignup} />
       )}
 
       <DisplayOverlay map={mymap} slope={slope} />
@@ -227,7 +234,7 @@ export default function Controls() {
           </div>
 
           <div id="Profile">
-            <DisplayProfile 
+            <DisplayProfile
               setOverlayLogin={setOverlayLogin}
               handleCloseOverlay={handleCloseOverlay}
             />
