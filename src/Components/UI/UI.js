@@ -8,7 +8,7 @@ import { DEFAULT_SLOPE } from "Constants.js";
 import ToggleSource from "Components/Functions/ToggleSource";
 import DisplayOverlay from "./DisplayOverlay";
 import DisplayProfile from "./DisplayProfile";
-import LoginModal from "./Login";
+import AccountAccessModal from "./AccountAccess/AccountAccess";
 import Footer from "Components/UI_Components/Footer";
 import FeedbackBox from "Components/UI_Components/FeedbackBox";
 import Slider from "Components/UI_Components/Slider";
@@ -194,7 +194,7 @@ export default function Controls() {
       )}
 
       {overlayLogin && (
-        <LoginModal setOverlayLogin={setOverlayLogin} />
+        <AccountAccessModal setOverlayLogin={setOverlayLogin} />
       )}
 
       <DisplayOverlay map={mymap} slope={slope} />
