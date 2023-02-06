@@ -1,10 +1,12 @@
 import { Card, Button, Form, Row, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { ErrorMessage } from '@hookform/error-message';
 import "../../Assets/CSS/Login.css";
 
+const LoginModal = ({ setOverlayLogin }) => {
+  const [showLogin, setShowLogin] = useState(true);
 
-const Login = ({ setOverlayLogin, setOverlaySignin }) => {
   /**
    * React hook form integration
    */
@@ -21,66 +23,71 @@ const Login = ({ setOverlayLogin, setOverlaySignin }) => {
 
   return (
     <Modal show={setOverlayLogin} onHide={() => setOverlayLogin(false)} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Welcome Back</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-          <div className="mb-3">
-            <label>Email address</label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Enter email"
-              {...register('email', {
-                required: 'Please enter your email',
-                pattern: {
-                  value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                  message: 'Please enter a valid email',
-                },
-              })}
-            />
-            <ErrorMessage
-              errors={errors}
-              name="email"
-              render={({ message }) => <p>{message}</p>}
-            />
-          </div>
-          <div className="mb-3">
-            <label>Password</label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter password"
-              {...register('password', {
-                required: 'Please enter your password'
-              })}
-            />
-            <ErrorMessage
-              errors={errors}
-              name="password"
-              render={({ message }) => <p>{message}</p>}
-            />
-          </div>
-          <div className="mb-3">
-          </div>
-          <div className="d-grid">
-            <Button type="submit" className="btn btn-primary" onClick={handleSubmit(onSubmit)}>
-              Sign in
-            </Button>
-          </div>
-          <p className="forgot-password text-right mb-0 mt-1">
-            Forgot <a href="#">password?</a>
-          </p>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer class="text-center mb-3">
-        <p className="text-right mb-0">
-          New here? <a href="#">Make an account</a>
-        </p>
-      </Modal.Footer>
+      {showLogin ? (
+        <LoginForm onSwitchClick={() => setShowLogin(false)} />
+      ) : (
+        <SignupForm onSwitchClick={() => setShowLogin(true)} />
+      )}
     </Modal>
   );
 };
 
-export default Login;
+const LoginForm = ({ onSwitchClick, register, errors, handleSubmit, onSubmit }) => (
+  <>
+    {/* login form fields */}
+    <Modal.Header closeButton>
+      <Modal.Title>Login Form</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <Form>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+      </Form>
+    </Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary">
+        Close
+      </Button>
+      <Button variant="primary">Login</Button>
+    </Modal.Footer>
+    <button onClick={onSwitchClick}>Switch to signup</button>
+  </>
+);
+
+const SignupForm = ({ onSwitchClick, register, errors, handleSubmit, onSubmit }) => (
+  <>
+    {/* signup form fields */}
+    <Modal.Header closeButton>
+      <Modal.Title>Create an Account</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <Form>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+      </Form>
+    </Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary">
+        Close
+      </Button>
+      <Button variant="primary">Login</Button>
+    </Modal.Footer>
+    <button onClick={onSwitchClick}>Switch to login</button>
+  </>
+);
+
+export default LoginModal;
