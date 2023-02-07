@@ -107,7 +107,7 @@ const SignupForm = ({ onSwitchClick, closeOverlay }) => {
                         <Form.Control
                             type="password"
                             placeholder="Confirm Password"
-                            {...register("password-confirm", {
+                            {...register("passwordConfirm", {
                                 required: "Please confirm your password", 
                                 validate: (val) => {
                                     if (watch('password') != val) {
@@ -118,7 +118,7 @@ const SignupForm = ({ onSwitchClick, closeOverlay }) => {
                         />
                         <ErrorMessage
                             errors={errors}
-                            name="password-confirm"
+                            name="passwordConfirm"
                             render={({ message }) => <p class="mb-1 text-danger">{message}</p>}
                         />
                     </Form.Group>
