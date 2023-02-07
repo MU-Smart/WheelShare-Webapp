@@ -3,7 +3,23 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from '@hookform/error-message';
 
+/**
+ * @author PJ Duimstra
+ * @copyright WheelShare 2023
+ * 
+ * This file contains the react component SignupForm used to accomodate 
+ * registrations for the WheelShare app. This component connects to the AccountAccessModal
+ * component and is displayed when showLogin == false.
+ * 
+ * @param {boolean} onSwitchClick This function is used to update the boolean state value in showLogin
+ *                      to show/hide the registration Modal content properly
+ * @param {boolean} closeOverlay This function is used to update the boolean state value in setShowLogin
+ *                     which shows/hides the AccountAccessModal overlay
+ * @returns the Modal content for the registration form associated with AccountAccessModal
+ */
+
 const SignupForm = ({ onSwitchClick, closeOverlay }) => {
+    //react-hook-form integration
     const { register, handleSubmit, formState: { errors }, watch } = useForm();
 
     /**

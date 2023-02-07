@@ -44,9 +44,10 @@ export default function Controls() {
   const [slope, setSlope] = useState(DEFAULT_SLOPE);
 
   const [overlayFeedback, setOverlayFeedback] = useState(false);
+
+  //useState variable associated with ~/AccountAccess components
   const [overlayLogin, setOverlayLogin] = useState(false);
-  const [overlaySignup, setOverlaySignup] = useState(false);
-  const [overlayForgotPassword, setOverlayForgotPassword] = useState(false);
+
   const [showOverlay, setShowOverlay] = useState(false);
 
   const handleCloseOverlay = () => {

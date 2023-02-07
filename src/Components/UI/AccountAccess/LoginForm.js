@@ -3,7 +3,25 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from '@hookform/error-message';
 
-const LoginForm = ({ onSwitchClick, closeOverlay }) => {
+/**
+ * @author PJ Duimstra
+ * @copyright WheelShare 2023
+ * 
+ * This file contains the react component LoginForm used to accomodate 
+ * registrations for the WheelShare app. This component connects to the AccountAccessModal
+ * component and is displayed when showLogin == true.
+ * 
+ * @param {boolean} onSwitchClick This function is used to update the boolean state value in showLogin
+ *                      to show/hide the registration Modal content properly
+ * @param {boolean} onPassClick This function is used to update the boolean state value in showPassword
+ *                    which shows/hides the password recovery Modal content properly
+ * @param {boolean} closeOverlay This function is used to update the boolean state value in setShowLogin
+ *                     which shows/hides the AccountAccessModal overlay
+ * @returns the Modal content for the login form content associated with AccountAccessModal
+ */
+
+const LoginForm = ({ onSwitchClick, onPassClick, closeOverlay }) => {
+    //react-hook-form integration
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     /**
@@ -66,6 +84,7 @@ const LoginForm = ({ onSwitchClick, closeOverlay }) => {
                     <Button type="submit" className="btn btn-primary" onClick={handleSubmit(onSubmit)}>
                         Sign in
                     </Button>
+                    <a class="mt-1" href="#" onClick={onPassClick}>Forgot Password?</a>
                 </div>
             </Modal.Body>
             <Modal.Footer class="text-center mb-3">
