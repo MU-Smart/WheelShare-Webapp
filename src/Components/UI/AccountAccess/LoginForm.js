@@ -23,7 +23,11 @@ const LoginForm = ({ onSwitchClick, closeOverlay }) => {
             <Modal.Body>
                 <Form className="mb-3">
                     <Form.Group>
-                        <Form.Control type="hidden" value="login" {...register("submissionType")}></Form.Control>
+                        <Form.Control 
+                            type="hidden" 
+                            value="login" 
+                            {...register("submissionType")}
+                        />
                         <Form.Label>Email address</Form.Label>
                         <Form.Control
                             type="email"
@@ -39,10 +43,10 @@ const LoginForm = ({ onSwitchClick, closeOverlay }) => {
                         <ErrorMessage
                             errors={errors}
                             name="email"
-                            render={({ message }) => <p>{message}</p>}
+                            render={({ message }) => <p class="text-danger">{message}</p>}
                         />
                     </Form.Group>
-                    <Form.Group controlId="formBasicPassword">
+                    <Form.Group className="mt-1">
                         <Form.Label>Password</Form.Label>
                         <Form.Control
                             type="password"
@@ -54,7 +58,7 @@ const LoginForm = ({ onSwitchClick, closeOverlay }) => {
                         <ErrorMessage
                             errors={errors}
                             name="password"
-                            render={({ message }) => <p>{message}</p>}
+                            render={({ message }) => <p class="mb-1 text-danger">{message}</p>}
                         />
                     </Form.Group>
                 </Form>
@@ -63,9 +67,6 @@ const LoginForm = ({ onSwitchClick, closeOverlay }) => {
                         Sign in
                     </Button>
                 </div>
-                <p className="forgot-password text-right mb-0 mt-1">
-                    Forgot <a href="#">password?</a>
-                </p>
             </Modal.Body>
             <Modal.Footer class="text-center mb-3">
                 New here? <a href="#" onClick={onSwitchClick}>Make an account</a>
