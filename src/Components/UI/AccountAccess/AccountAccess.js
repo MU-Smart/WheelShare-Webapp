@@ -33,19 +33,26 @@ const AccountAccessModal = ({ setOverlayLogin }) => {
    */
   const [showPassword, setShowPassword] = useState(false);
 
-  return (
-    <Modal show={setOverlayLogin} onHide={() => setOverlayLogin(false)} centered>
-      {showLogin ? (
-        showPassword ? (
-          <ForgotPasswordForm closeOverlay={() => setShowPassword(false)}/>
-        ) : (
-          <LoginForm onSwitchClick={() => setShowLogin(false)} onPassClick={() => setShowPassword(true)} closeOverlay={() => setOverlayLogin(false)}/>
-        )
-      ) : (
-        <SignupForm onSwitchClick={() => setShowLogin(true)} closeOverlay={() => setOverlayLogin(false)}/>
-      )}
-    </Modal>
-  );
+  //-------------// Return Statements \\-------------\\
+  if (showLogin && showPassword) {
+    return (
+      <Modal show={setOverlayLogin} onHide={() => setOverlayLogin(false)} centered>
+        <ForgotPasswordForm closeOverlay={() => setShowPassword(false)} />
+      </Modal>
+    )
+  } else if (showLogin && !showPassword) {
+    return (
+      <Modal show={setOverlayLogin} onHide={() => setOverlayLogin(false)} centered>
+        <LoginForm onSwitchClick={() => setShowLogin(false)} onPassClick={() => setShowPassword(true)} closeOverlay={() => setOverlayLogin(false)} />
+      </Modal>
+    )
+  } else {
+    return (
+      <Modal show={setOverlayLogin} onHide={() => setOverlayLogin(false)} centered>
+        <SignupForm onSwitchClick={() => setShowLogin(true)} closeOverlay={() => setOverlayLogin(false)} />
+      </Modal>
+    )
+  }
 };
 
 export default AccountAccessModal;
