@@ -8,11 +8,13 @@ import { DEFAULT_SLOPE } from "Constants.js";
 import ToggleSource from "Components/Functions/ToggleSource";
 import DisplayOverlay from "./DisplayOverlay";
 import DisplayProfile from "./DisplayProfile";
+import AccountAccessModal from "./AccountAccess/AccountAccess";
 import Footer from "Components/UI_Components/Footer";
 import FeedbackBox from "Components/UI_Components/FeedbackBox";
 import Slider from "Components/UI_Components/Slider";
 import SearchBar from "Components/UI_Components/SearchBar";
 import Marker from "Components/UI_Components/Marker";
+
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "Assets/CSS/UI.css";
@@ -42,6 +44,10 @@ export default function Controls() {
   const [slope, setSlope] = useState(DEFAULT_SLOPE);
 
   const [overlayFeedback, setOverlayFeedback] = useState(false);
+
+  //useState variable associated with ~/AccountAccess components
+  const [overlayLogin, setOverlayLogin] = useState(false);
+
   const [showOverlay, setShowOverlay] = useState(false);
 
   const handleCloseOverlay = () => {
@@ -106,10 +112,10 @@ export default function Controls() {
    */
   const geocode = async (address, isStart) => {
     if (!checkValidAddress(address)) {
-      if (isStart)  {
+      if (isStart) {
         startMarker.remove();
         startMarker = Marker();
-      } else  {
+      } else {
         endMarker.remove();
         endMarker = Marker();
       }
@@ -188,6 +194,10 @@ export default function Controls() {
         <FeedbackBox setOverlayFeedback={setOverlayFeedback} />
       )}
 
+      {overlayLogin && (
+        <AccountAccessModal setOverlayLogin={setOverlayLogin} />
+      )}
+
       <DisplayOverlay map={mymap} slope={slope} />
 
       <Button id="Overlay-button" variant="primary" onClick={handleShowOverlay}>
@@ -220,7 +230,10 @@ export default function Controls() {
           </div>
 
           <div id="Profile">
-            <DisplayProfile />
+            <DisplayProfile
+              setOverlayLogin={setOverlayLogin}
+              handleCloseOverlay={handleCloseOverlay}
+            />
           </div>
 
           <div id="Footer">
