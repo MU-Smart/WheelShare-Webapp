@@ -1,24 +1,23 @@
+import { Marker } from 'Components/GoogleMapsWrapper';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import { MapProvider } from 'react-map-gl';
 
 import { JSAPILoader, GoogleMap } from './Components/GoogleMapsWrapper';
 
-import Map from './Components/Map/Map';
-import UI from './Components/UI/UI';
-
 function Root() {
+  document.body.style.margin = 0;
   return (
     <JSAPILoader
       apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
       libraries={['places']}
     >
-      <GoogleMap height='500px' width='100%' />
+      <GoogleMap
+        height='100vh'
+        width='100vw'
+        center={{ lat: 39.51, lng: -84.73 }}
+      >
+      </GoogleMap>
     </JSAPILoader>
-    // <MapProvider>
-    //   <Map />
-    //   <UI />
-    // </MapProvider>
   );
 }
 

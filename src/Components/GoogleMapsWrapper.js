@@ -54,60 +54,91 @@ export class JSAPILoader extends Component {
 }
 
 // React component that renders a Google Map.
-// Props: height, width
+// Props: height, width, center, locate, zoom
 export class GoogleMap extends Component {
   constructor(props) {
     super(props);
+    this.state = { isLoading: true };
     this.ref = createRef();
   }
 
   componentDidMount() {
-    // Create the Google Map instance.
-    this.map = new window.google.maps.Map(this.ref.current, {
-      center: { lat: 49.2827, lng: -123.1207 },
-      zoom: 14,
-      disableDefaultUI: true,
-      mapTypeId: 'terrain',
-    });
+    // Property defaults
+    const default_center = { lat: 49.2827, lng: -123.1207 };
+    const default_zoom = 14;
 
-    // Set the map to the user's location with HTML5 geolocation.
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        this.map.setCenter(pos);
-      });
+    // Create the map with default center and zoom if props not specified.
+    const geolocationFailed = () => {
+      this.createMap(
+        this.props.center || default_center,
+        this.props.zoom || default_zoom
+      );
+      this.setState({ isLoading: false });
+    };
+
+    // Set the map center to user's location if requested.
+    if (this.props.locate && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.createMap(
+            {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            },
+            this.props.zoom || default_zoom
+          );
+          this.setState({ isLoading: false });
+        },
+        (error) => {
+          console.log(`GeoLocation Error: ${error.message}`);
+          geolocationFailed();
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        }
+      );
+    } else {
+      geolocationFailed();
     }
   }
 
+  // Create the Google Map instance.
+  createMap = (center, zoom) => {
+    this.map = new window.google.maps.Map(this.ref.current, {
+      center: center,
+      zoom: zoom,
+      disableDefaultUI: true,
+    });
+  };
+
   // Render the map and pass its reference to the children.
-  render() {
-    return (
-      <div>
-        <div
-          id='map'
-          ref={this.ref}
-          style={{
-            height: this.props.height,
-            width: this.props.width,
-          }}
-        ></div>
-        {Children.map(this.props.children, (child) => {
-          return cloneElement(child, { map: this.map });
-        })}
-      </div>
-    );
-  }
+  render = () => (
+    <div>
+      <div
+        id='map'
+        ref={this.ref}
+        style={{
+          height: this.props.height,
+          width: this.props.width,
+        }}
+      ></div>
+      {/* Dont display markers until map is loaded */}
+      {this.state.isLoading
+        ? null
+        : Children.map(this.props.children, (child) => {
+            return cloneElement(child, { map: this.map });
+          })}
+    </div>
+  );
 }
 
 // React component that renders a marker on a Google Map.
-// Props: position, title, map
+// Props: position, title, map, zIndex
 export class Marker extends Component {
   constructor(props) {
     super(props);
-    this.ref = createRef();
   }
 
   componentDidMount() {
@@ -116,15 +147,9 @@ export class Marker extends Component {
       position: this.props.position,
       map: this.props.map,
       title: this.props.title,
+      zIndex: this.props.zIndex,
     });
   }
 
-  // Render the marker.
-  render() {
-    return (
-      <div ref={this.ref}>
-        <p>{this.props.map}</p>
-      </div>
-    );
-  }
+  render = () => null;
 }
