@@ -1,4 +1,4 @@
-import { Marker } from 'Components/GoogleMapsWrapper';
+import { MapControl, Marker } from 'Components/GoogleMapsWrapper';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -15,8 +15,7 @@ function Root() {
         height='100vh'
         width='100vw'
         center={{ lat: 39.51, lng: -84.73 }}
-      >
-      </GoogleMap>
+      />
     </JSAPILoader>
   );
 }

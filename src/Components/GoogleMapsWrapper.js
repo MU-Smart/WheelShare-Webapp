@@ -1,4 +1,12 @@
-import { Children, cloneElement, Component, createRef } from 'react';
+import {
+  Children,
+  cloneElement,
+  Component,
+  createElement,
+  createRef,
+} from 'react';
+
+import ReactDOMServer from 'react-dom/server';
 
 // React component that loads the Google Maps API and
 // renders the children after the API is loaded.
@@ -68,12 +76,11 @@ export class GoogleMap extends Component {
     const default_zoom = 14;
 
     // Create the map with default center and zoom if props not specified.
-    const geolocationFailed = () => {
+    const noGeolocation = () => {
       this.createMap(
         this.props.center || default_center,
         this.props.zoom || default_zoom
       );
-      this.setState({ isLoading: false });
     };
 
     // Set the map center to user's location if requested.
@@ -87,11 +94,10 @@ export class GoogleMap extends Component {
             },
             this.props.zoom || default_zoom
           );
-          this.setState({ isLoading: false });
         },
         (error) => {
           console.log(`GeoLocation Error: ${error.message}`);
-          geolocationFailed();
+          noGeolocation();
         },
         {
           enableHighAccuracy: true,
@@ -100,7 +106,7 @@ export class GoogleMap extends Component {
         }
       );
     } else {
-      geolocationFailed();
+      noGeolocation();
     }
   }
 
@@ -111,6 +117,8 @@ export class GoogleMap extends Component {
       zoom: zoom,
       disableDefaultUI: true,
     });
+    this.setState({ isLoading: false });
+    if (this.props.callback) this.props.callback(this.map);
   };
 
   // Render the map and pass its reference to the children.
