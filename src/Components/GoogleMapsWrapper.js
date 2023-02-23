@@ -27,7 +27,7 @@ export class JSAPILoader extends Component {
       this.props.apiKey
     }&callback=JSAPILoad${
       this.props.libraries ? `&libraries=${this.props.libraries}` : ''
-    }}`;
+    }`;
     script.defer = true;
     script.async = true;
 
@@ -125,7 +125,7 @@ export class GoogleMap extends Component {
           width: this.props.width,
         }}
       ></div>
-      {/* Dont display markers until map is loaded */}
+      {/* Dont display children until map is loaded */}
       {this.state.isLoading
         ? null
         : Children.map(this.props.children, (child) => {
@@ -199,5 +199,51 @@ export class MapControl extends Component {
   }
 
   // Pass the children to the control group.
-  render = () => createPortal(this.props.children, this.controlGroup);
+  render = () =>
+    createPortal(
+      Children.map(this.props.children, (child) => {
+        return cloneElement(child, { map: this.props.map });
+      }),
+      this.controlGroup
+    );
+}
+
+// React component that renders an autocomplete search box.
+// Props: map, callback, style, placeholder
+export class PlaceAutocomplete extends Component {
+  constructor(props) {
+    super(props);
+    this.ref = createRef();
+  }
+
+  componentDidMount() {
+    // Check if the Google Maps Places API is loaded.
+    if (window.google.maps.places) {
+      // Create the autocomplete search box.
+      const autocomplete = new window.google.maps.places.Autocomplete(
+        this.ref.current
+      );
+      autocomplete.bindTo('bounds', this.props.map);
+
+      // Listen for autocomplete selection.
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        if (place.geometry) {
+          this.props.callback(place);
+        }
+      });
+    } else {
+      console.error('Google Maps Places API not loaded');
+    }
+  }
+
+  // Render the input box.
+  render = () => (
+    <input
+      ref={this.ref}
+      type='text'
+      style={this.props.style || {}}
+      placeholder={this.props.placeholder || ''}
+    />
+  );
 }
