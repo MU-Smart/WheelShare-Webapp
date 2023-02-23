@@ -1,12 +1,5 @@
-import {
-  Children,
-  cloneElement,
-  Component,
-  createElement,
-  createRef,
-} from 'react';
-
-import ReactDOMServer from 'react-dom/server';
+import { Children, cloneElement, Component, createRef } from 'react';
+import { createPortal } from 'react-dom';
 
 // React component that loads the Google Maps API and
 // renders the children after the API is loaded.
@@ -160,4 +153,51 @@ export class Marker extends Component {
   }
 
   render = () => null;
+}
+
+// React component that renders a control section on a Google Map.
+// Props: position, map
+export class MapControl extends Component {
+  constructor(props) {
+    super(props);
+    this.controlGroup = document.createElement('div');
+  }
+
+  componentDidMount() {
+    // Convert the position prop to a Google Maps ControlPosition.
+    const getPosition = () => {
+      switch (this.props.position) {
+        case 'TOP_LEFT':
+          return window.google.maps.ControlPosition.TOP_LEFT;
+        case 'TOP_RIGHT':
+          return window.google.maps.ControlPosition.TOP_RIGHT;
+        case 'LEFT_TOP':
+          return window.google.maps.ControlPosition.LEFT_TOP;
+        case 'RIGHT_TOP':
+          return window.google.maps.ControlPosition.RIGHT_TOP;
+        case 'LEFT_CENTER':
+          return window.google.maps.ControlPosition.LEFT_CENTER;
+        case 'RIGHT_CENTER':
+          return window.google.maps.ControlPosition.RIGHT_CENTER;
+        case 'LEFT_BOTTOM':
+          return window.google.maps.ControlPosition.LEFT_BOTTOM;
+        case 'RIGHT_BOTTOM':
+          return window.google.maps.ControlPosition.RIGHT_BOTTOM;
+        case 'BOTTOM_CENTER':
+          return window.google.maps.ControlPosition.BOTTOM_CENTER;
+        case 'BOTTOM_LEFT':
+          return window.google.maps.ControlPosition.BOTTOM_LEFT;
+        case 'BOTTOM_RIGHT':
+          return window.google.maps.ControlPosition.BOTTOM_RIGHT;
+        default:
+          return window.google.maps.ControlPosition.TOP_CENTER;
+      }
+    };
+
+    // Add the control group to the map.
+    this.props.map.controls[getPosition()].push(this.controlGroup);
+  }
+
+  // Pass the children to the control group.
+  render = () => createPortal(this.props.children, this.controlGroup);
 }
