@@ -268,7 +268,7 @@ export class PlaceAutocomplete extends Component {
 
 // React componenent that renders a line on a Google Map.
 // Props: path, map, strokeColor, strokeOpacity, strokeWeight, zIndex
-export class MapLine extends Component {
+export class MapPath extends Component {
   constructor(props) {
     super(props);
   }
