@@ -9,8 +9,6 @@ import ControlUI from 'Components/UI/ControlUI';
 
 function Root() {
   // TODO: Move to separte files
-  const [map, setMap] = React.useState(null);
-
   document.body.style.margin = 0;
 
   return (
@@ -22,9 +20,8 @@ function Root() {
         height='100vh'
         width='100vw'
         center={{ lat: 39.51, lng: -84.73 }}
-        callback={(m) => setMap(m)}
       >
-        <ControlUI map={map} />
+        <ControlUI />
       </GoogleMap>
     </JSAPILoader>
   );
