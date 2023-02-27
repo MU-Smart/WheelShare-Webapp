@@ -53,13 +53,21 @@ export default class SearchPanel extends Component {
           <PlaceAutocomplete
             className='clean-input shadow-inset'
             map={this.props.map}
-            callback={(place) => this.setState({ placeFrom: place })}
+            callback={(place) => {
+              this.setState({ placeFrom: place });
+              this.props.map.panTo(place.geometry.location);
+              this.props.map.setZoom(15);
+            }}
             placeholder='From'
           />
           <PlaceAutocomplete
             className='clean-input shadow-inset'
             map={this.props.map}
-            callback={(place) => this.setState({ placeTo: place })}
+            callback={(place) => {
+              this.setState({ placeTo: place });
+              this.props.map.panTo(place.geometry.location);
+              this.props.map.setZoom(15);
+            }}
             placeholder='To'
           />
           <button
