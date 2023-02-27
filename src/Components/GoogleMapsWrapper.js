@@ -118,7 +118,8 @@ export class GoogleMap extends Component {
   render = () => (
     <div>
       <div
-        id='map'
+        className={this.props.className || 'GoogleMap'}
+        id={this.props.id || 'GoogleMap'}
         ref={this.ref}
         style={{
           height: this.props.height,
@@ -136,7 +137,7 @@ export class GoogleMap extends Component {
 }
 
 // React component that renders a marker on a Google Map.
-// Props: position, title, map, zIndex
+// Props: position, title, map, zIndex, icon, callback
 export class Marker extends Component {
   constructor(props) {
     super(props);
@@ -149,7 +150,22 @@ export class Marker extends Component {
       map: this.props.map,
       title: this.props.title,
       zIndex: this.props.zIndex,
+      icon: this.props.icon,
     });
+    // Pass the marker reference to the parent.
+    this.props.callback(this.marker);
+  }
+
+  // Update the marker position.
+  componentDidUpdate(prevProps) {
+    if (this.props.position !== prevProps.position) {
+      this.marker.setPosition(this.props.position);
+    }
+  }
+
+  // Remove the marker from the map.
+  componentWillUnmount() {
+    this.marker.setMap(null);
   }
 
   render = () => null;
@@ -209,7 +225,7 @@ export class MapControl extends Component {
 }
 
 // React component that renders an autocomplete search box.
-// Props: map, callback, style, placeholder
+// Props: map, callback, style, placeholder, className
 export class PlaceAutocomplete extends Component {
   constructor(props) {
     super(props);
@@ -240,6 +256,8 @@ export class PlaceAutocomplete extends Component {
   // Render the input box.
   render = () => (
     <input
+      className={this.props.className || 'Autocomplete'}
+      id={this.props.id || 'Autocomplete'}
       ref={this.ref}
       type='text'
       style={this.props.style || {}}
