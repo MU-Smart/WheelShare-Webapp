@@ -5,7 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { JSAPILoader, GoogleMap } from './Components/GoogleMapsWrapper';
 
 import 'Assets/CSS/GoogleMap.css';
-import { ControlUI } from 'Components/UI/ControlUI';
+import ControlUI from 'Components/UI/ControlUI';
 
 function Root() {
   // TODO: Move to separte files

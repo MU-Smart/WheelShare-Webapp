@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import { MapControl, Marker } from 'Components/GoogleMapsWrapper';
-import { ControlPanel } from './SearchPanel';
+import SearchPanel from './SearchPanel';
 
-export class ControlUI extends Component {
+export default class ControlUI extends Component {
   constructor(props) {
     super(props);
 
@@ -53,7 +53,7 @@ export class ControlUI extends Component {
         />
       )}
       <MapControl map={this.props.map} position='TOP_LEFT'>
-        <ControlPanel
+        <SearchPanel
           callback={({ placeFrom, placeTo }) => {
             this.setState({ placeFrom, placeTo });
           }}

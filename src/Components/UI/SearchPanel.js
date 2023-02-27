@@ -1,9 +1,7 @@
 import { Component } from 'react';
-import {
-  PlaceAutocomplete,
-} from 'Components/GoogleMapsWrapper';
+import { PlaceAutocomplete } from 'Components/GoogleMapsWrapper';
 
-export class ControlPanel extends Component {
+export default class SearchPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
