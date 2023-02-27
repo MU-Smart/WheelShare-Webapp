@@ -265,3 +265,37 @@ export class PlaceAutocomplete extends Component {
     />
   );
 }
+
+// React componenent that renders a line on a Google Map.
+// Props: path, map, strokeColor, strokeOpacity, strokeWeight, zIndex
+export class MapLine extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    // Create the line.
+    this.line = new window.google.maps.Polyline({
+      path: this.props.path,
+      map: this.props.map,
+      strokeColor: this.props.strokeColor,
+      strokeOpacity: this.props.strokeOpacity,
+      strokeWeight: this.props.strokeWeight,
+      zIndex: this.props.zIndex,
+    });
+  }
+
+  // Update the line path.
+  componentDidUpdate(prevProps) {
+    if (this.props.path !== prevProps.path) {
+      this.line.setPath(this.props.path);
+    }
+  }
+
+  // Remove the line from the map.
+  componentWillUnmount() {
+    this.line.setMap(null);
+  }
+
+  render = () => null;
+}
