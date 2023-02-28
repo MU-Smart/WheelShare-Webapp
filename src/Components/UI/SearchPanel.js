@@ -1,43 +1,27 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import { PlaceAutocomplete } from 'Components/GoogleMapsWrapper';
 
-export default class SearchPanel extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      placeFrom: null,
-      placeTo: null,
-      show: false,
-    };
-  }
+export default function SearchPanel(props) {
+  const [placeFrom, setPlaceFrom] = useState(null);
+  const [placeTo, setPlaceTo] = useState(null);
+  const [show, setShow] = useState(false);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.placeFrom !== prevState.placeFrom ||
-      this.state.placeTo !== prevState.placeTo
-    ) {
-      this.props.callback({
-        placeFrom: this.state.placeFrom,
-        placeTo: this.state.placeTo,
-      });
-    }
-  }
+  useEffect(() => {
+    props.callback({ placeFrom, placeTo });
+  }, [placeFrom, placeTo]);
 
-  render = () => (
+  return (
     <>
       {/* Control section */}
       <div
         style={{
           margin: '10px',
           position: 'relative',
-          display: this.state.show ? 'block' : 'none',
+          display: show ? 'block' : 'none',
         }}
       >
         <div className='card-header'>
-          <button
-            className='clean-input close'
-            onClick={() => this.setState({ show: !this.state.show })}
-          >
+          <button className='clean-input close' onClick={() => setShow(!show)}>
             X
           </button>
           <h1
@@ -52,21 +36,21 @@ export default class SearchPanel extends Component {
         <div className='card-body'>
           <PlaceAutocomplete
             className='clean-input shadow-inset'
-            map={this.props.map}
+            map={props.map}
             callback={(place) => {
-              this.setState({ placeFrom: place });
-              this.props.map.panTo(place.geometry.location);
-              this.props.map.setZoom(15);
+              setPlaceFrom(place);
+              props.map.panTo(place.geometry.location);
+              props.map.setZoom(15);
             }}
             placeholder='From'
           />
           <PlaceAutocomplete
             className='clean-input shadow-inset'
-            map={this.props.map}
+            map={props.map}
             callback={(place) => {
-              this.setState({ placeTo: place });
-              this.props.map.panTo(place.geometry.location);
-              this.props.map.setZoom(15);
+              setPlaceTo(place);
+              props.map.panTo(place.geometry.location);
+              props.map.setZoom(15);
             }}
             placeholder='To'
           />
@@ -76,13 +60,13 @@ export default class SearchPanel extends Component {
               console.log('Calculate Path');
               console.log(
                 'placeFrom',
-                this.state.placeFrom?.geometry.location.lat(),
-                this.state.placeFrom?.geometry.location.lng()
+                state.placeFrom?.geometry.location.lat(),
+                state.placeFrom?.geometry.location.lng()
               );
               console.log(
                 'placeTo',
-                this.state.placeTo?.geometry.location.lat(),
-                this.state.placeTo?.geometry.location.lng()
+                state.placeTo?.geometry.location.lat(),
+                state.placeTo?.geometry.location.lng()
               );
             }}
           >
@@ -94,7 +78,7 @@ export default class SearchPanel extends Component {
       <div
         style={{
           margin: '10px',
-          display: this.state.show ? 'none' : 'block',
+          display: show ? 'none' : 'block',
         }}
       >
         <button
@@ -102,7 +86,7 @@ export default class SearchPanel extends Component {
             boxShadow: '0 1px 5px 1px grey',
           }}
           className='clean-input'
-          onClick={() => this.setState({ show: !this.state.show })}
+          onClick={() => setShow(!show)}
         >
           <h3
             style={{
