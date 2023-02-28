@@ -1,90 +1,76 @@
-import { Component } from 'react';
 import { MapControl, MapPath, Marker } from 'Components/GoogleMapsWrapper';
+import { useEffect, useState } from 'react';
 import SearchPanel from './SearchPanel';
 
-export default class ControlUI extends Component {
-  constructor(props) {
-    super(props);
+export default function ControlUI(props) {
+  const [placeFrom, setPlaceFrom] = useState(null);
+  const [placeTo, setPlaceTo] = useState(null);
+  const [path, setPath] = useState(null);
 
-    this.state = {
-      placeFrom: null,
-      placeTo: null,
-      path: null,
-    };
-  }
+  useEffect(() => {
+    setPath(getPath());
+  }, [placeFrom, placeTo]);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.placeFrom !== prevState.placeFrom ||
-      this.state.placeTo !== prevState.placeTo
-    ) {
-      this.setState({ path: this.getPath() });
-    }
-  }
-
-  getPath = () => {
-    return [
-      this.state.placeFrom?.geometry.location,
-      this.state.placeTo?.geometry.location,
-    ];
+  const getPath = () => {
+    if (!placeFrom || !placeTo) return null;
+    return [placeFrom?.geometry.location, placeTo?.geometry.location];
   };
 
-  render = () => (
+  return (
     <>
       {/* Path between placeFrom and placeTo */}
-      {!this.state.path ? null : (
-        <MapPath map={this.props.map} path={this.state.path} />
-      )}
+      {!path ? null : <MapPath map={props.map} path={path} />}
       {/* Marker for placeFrom */}
-      {!this.state.placeFrom ? null : (
+      {!placeFrom ? null : (
         <Marker
           title='From'
           icon={{
             url: 'http://maps.google.com/mapfiles/ms/icons/green.png',
           }}
-          map={this.props.map}
+          map={props.map}
           position={{
-            lat: this.state.placeFrom?.geometry.location.lat(),
-            lng: this.state.placeFrom?.geometry.location.lng(),
+            lat: placeFrom?.geometry.location.lat(),
+            lng: placeFrom?.geometry.location.lng(),
           }}
           callback={(marker) => {
             marker.addListener('click', () => {
-              this.props.map.panTo(marker.getPosition());
-              this.props.map.setZoom(15);
+              props.map.panTo(marker.getPosition());
+              props.map.setZoom(15);
             });
           }}
         />
       )}
       {/* Marker for placeTo */}
-      {!this.state.placeTo ? null : (
+      {!placeTo ? null : (
         <Marker
           title='To'
           icon={{
             url: 'http://maps.google.com/mapfiles/ms/icons/red.png',
           }}
-          map={this.props.map}
+          map={props.map}
           position={{
-            lat: this.state.placeTo?.geometry.location.lat(),
-            lng: this.state.placeTo?.geometry.location.lng(),
+            lat: placeTo?.geometry.location.lat(),
+            lng: placeTo?.geometry.location.lng(),
           }}
           callback={(marker) => {
             marker.addListener('click', () => {
-              this.props.map.panTo(marker.getPosition());
-              this.props.map.setZoom(15);
+              props.map.panTo(marker.getPosition());
+              props.map.setZoom(15);
             });
           }}
         />
       )}
       {/* Search panel */}
-      <MapControl map={this.props.map} position='TOP_LEFT'>
+      <MapControl map={props.map} position='TOP_LEFT'>
         <SearchPanel
           callback={({ placeFrom, placeTo }) => {
-            this.setState({ placeFrom, placeTo });
+            setPlaceFrom(placeFrom);
+            setPlaceTo(placeTo);
           }}
         />
       </MapControl>
       {/* Overlay toggles */}
-      <MapControl map={this.props.map} position='TOP_RIGHT'>
+      <MapControl map={props.map} position='TOP_RIGHT'>
         <div>
           <h1>Overlay toggles</h1>
         </div>
