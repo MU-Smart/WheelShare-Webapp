@@ -1,3 +1,4 @@
+import { ToggleGoogleSource } from 'Components/Functions/ToggleSource';
 import { MapControl, MapPath, Marker } from 'Components/GoogleMapsWrapper';
 import { useEffect, useState } from 'react';
 import SearchPanel from './SearchPanel';
@@ -73,6 +74,9 @@ export default function ControlUI(props) {
       <MapControl map={props.map} position='TOP_RIGHT'>
         <div>
           <h1>Overlay toggles</h1>
+          <button className='clean-input shadow' onClick={() => {
+            ToggleGoogleSource('surfaces', props.map, 1);
+          }}>Toggle Path</button>
         </div>
       </MapControl>
     </>
