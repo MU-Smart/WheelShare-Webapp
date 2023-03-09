@@ -14,6 +14,12 @@ function Root() {
   // TODO - Add routing display
   // TODO - Add data to url paramenters
 
+  React.useEffect(() => {
+    console.log(
+      Number(new URLSearchParams(window.location.search).get('zoom'))
+    );
+  }, []);
+
   const updateURLCoords = (lat, lng) => {
     const params = new URLSearchParams(window.location.search);
     params.set('lat', lat);
