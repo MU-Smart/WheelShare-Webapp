@@ -22,8 +22,8 @@ export function getPath(url) {
       }
       pathInfo.push(response.totalUncomfortScore);
       pathInfo.push(response.averageUncomfortScore);
-      pathInfo.push(maxUncomfortScore);
-      pathInfo.push(nodeCount);
+      pathInfo.push(response.maxUncomfortScore);
+      pathInfo.push(response.nodeCount);
       return path;
     })
     .catch(error => {
