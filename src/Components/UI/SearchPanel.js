@@ -60,13 +60,13 @@ export default function SearchPanel(props) {
               console.log('Calculate Path');
               console.log(
                 'placeFrom',
-                state.placeFrom?.geometry.location.lat(),
-                state.placeFrom?.geometry.location.lng()
+                placeFrom?.geometry.location.lat(),
+                placeFrom?.geometry.location.lng()
               );
               console.log(
                 'placeTo',
-                state.placeTo?.geometry.location.lat(),
-                state.placeTo?.geometry.location.lng()
+                placeTo?.geometry.location.lat(),
+                placeTo?.geometry.location.lng()
               );
             }}
           >

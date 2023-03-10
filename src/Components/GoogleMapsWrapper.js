@@ -147,7 +147,7 @@ export function GoogleMap(props) {
 
   // Create the Google Map instance.
   function createMap(center, zoom) {
-    map.current = new google.maps.Map(ref.current, {
+    map.current = new window.google.maps.Map(ref.current, {
       ...props.options,
       center: center,
       zoom: zoom,
