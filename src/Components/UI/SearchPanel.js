@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { PlaceAutocomplete } from 'Components/GoogleMapsWrapper';
+import { PlaceAutocomplete } from 'Components/Google_Map/PlaceAutoComplete';
 
-export default function SearchPanel(props) {
+export const SearchPanel = (props) => {
   const [placeFrom, setPlaceFrom] = useState(null);
   const [placeTo, setPlaceTo] = useState(null);
   const [show, setShow] = useState(false);
