@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { PlaceAutocomplete } from 'Components/GoogleMapsWrapper';
+import { PlaceAutocomplete } from 'Components/Google_Map/PlaceAutoComplete';
 
-export default function SearchPanel(props) {
+export const SearchPanel = (props) => {
   const [placeFrom, setPlaceFrom] = useState(null);
   const [placeTo, setPlaceTo] = useState(null);
   const [show, setShow] = useState(false);
@@ -60,13 +60,13 @@ export default function SearchPanel(props) {
               console.log('Calculate Path');
               console.log(
                 'placeFrom',
-                state.placeFrom?.geometry.location.lat(),
-                state.placeFrom?.geometry.location.lng()
+                placeFrom?.geometry.location.lat(),
+                placeFrom?.geometry.location.lng()
               );
               console.log(
                 'placeTo',
-                state.placeTo?.geometry.location.lat(),
-                state.placeTo?.geometry.location.lng()
+                placeTo?.geometry.location.lat(),
+                placeTo?.geometry.location.lng()
               );
             }}
           >

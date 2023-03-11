@@ -1,12 +1,16 @@
 import { ToggleGoogleSource } from 'Components/Functions/ToggleSource';
-import { MapControl, MapPath, Marker } from 'Components/GoogleMapsWrapper';
+import { MapControl } from 'Components/Google_Map/MapControl';
+import { MapPath } from 'Components/Google_Map/MapPath';
+import { Marker } from 'Components/Google_Map/Marker';
+
 import { useEffect, useState } from 'react';
 import SearchPanel from './SearchPanel';
 
-export default function ControlUI(props) {
+export const ControlUI = (props) => {
   const [placeFrom, setPlaceFrom] = useState(null);
   const [placeTo, setPlaceTo] = useState(null);
   const [path, setPath] = useState(null);
+  console.log(props.map);
 
   useEffect(() => {
     setPath(getPath());
