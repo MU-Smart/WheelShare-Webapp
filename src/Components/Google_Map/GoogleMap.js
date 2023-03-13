@@ -74,7 +74,7 @@ export const GoogleMap = (props) => {
     if (props.onLoad) {
       props.onLoad(map.current);
     }
-  }
+  };
 
   // Render the map and pass it to the children.
   return (
@@ -92,8 +92,8 @@ export const GoogleMap = (props) => {
       {isLoading
         ? null
         : Children.map(props.children, (child) => {
-            return cloneElement(child, { map: map.current });
+            return child ? cloneElement(child, { map: map.current }) : child;
           })}
     </div>
   );
-}
+};
