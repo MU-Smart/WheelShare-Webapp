@@ -2,6 +2,7 @@ import { GoogleMap } from 'Components/Google_Map/GoogleMap.js';
 import { JSAPILoader } from './Components/Google_Map/JSAPILoader.js';
 import { ControlUI } from 'Components/UI/ControlUI.js';
 
+import 'App.css';
 import 'Assets/CSS/GoogleMap.css';
 
 export const App = () => {
