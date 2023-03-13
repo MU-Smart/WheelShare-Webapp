@@ -2,9 +2,9 @@ import { ToggleGoogleSource } from 'Components/Functions/ToggleSource';
 import { MapControl } from 'Components/Google_Map/MapControl';
 import { MapPath } from 'Components/Google_Map/MapPath';
 import { Marker } from 'Components/Google_Map/Marker';
+import { SearchPanel } from './SearchPanel';
 
 import { useEffect, useState } from 'react';
-import SearchPanel from './SearchPanel';
 
 export const ControlUI = (props) => {
   const [placeFrom, setPlaceFrom] = useState(null);
@@ -78,11 +78,16 @@ export const ControlUI = (props) => {
       <MapControl map={props.map} position='TOP_RIGHT'>
         <div>
           <h1>Overlay toggles</h1>
-          <button className='clean-input shadow' onClick={() => {
-            ToggleGoogleSource('surfaces', props.map, 1);
-          }}>Toggle Path</button>
+          <button
+            className='clean-input shadow'
+            onClick={() => {
+              ToggleGoogleSource('surfaces', props.map, 1);
+            }}
+          >
+            Toggle Path
+          </button>
         </div>
       </MapControl>
     </>
   );
-}
+};

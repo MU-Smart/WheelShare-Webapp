@@ -42,7 +42,7 @@ export const App = () => {
             -84.7354,
         }}
         zoom={
-          Number(new URLSearchParams(window.location.search).get('zoom')) || 16
+          Number(new URLSearchParams(window.location.search).get('zoom')) || 14
         }
         options={{
           disableDefaultUI: true,
@@ -57,7 +57,6 @@ export const App = () => {
           map.addListener('zoom_changed', () => {
             updateURLZoom(map.getZoom());
           });
-          setMapRef(map);
         }}
       >
         <ControlUI />
