@@ -49,7 +49,7 @@ export const GoogleMap = (props) => {
           );
         },
         (error) => {
-          console.log(`GeoLocation Error: ${error.message}`);
+          console.warn(`GeoLocation Error: ${error.message}`);
           noGeolocation();
         },
         {

@@ -10,7 +10,6 @@ export const ControlUI = (props) => {
   const [placeFrom, setPlaceFrom] = useState(null);
   const [placeTo, setPlaceTo] = useState(null);
   const [path, setPath] = useState(null);
-  console.log(props.map);
 
   useEffect(() => {
     setPath(getPath());
