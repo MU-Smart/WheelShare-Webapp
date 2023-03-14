@@ -48,6 +48,7 @@ export const App = () => {
     <>
       {/* Navbar */}
       <div className='navbar h-16 bg-base-100'>
+        {/* Search toggle */}
         <div className='navbar-start'>
           <button
             className='btn btn-sm btn-primary'
@@ -196,6 +197,7 @@ export const App = () => {
               }}
               placeholder='To'
             />
+            {/* Search button */}
             <div className='card-actions justify-center mt-4'>
               <button
                 className='btn btn-primary'
