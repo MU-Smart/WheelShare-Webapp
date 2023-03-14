@@ -15,16 +15,17 @@ export function getPath(url) {
   let pathInfo = [];
   let path = [pathData, pathInfo];
 
-  fetch(url, {mode: "no-cors", credentials: "omit"})
-    .then(response => {
-      for (i = 0; i < response.nodeCount; i++) {
-        pathData.push({"lat" : nodeList[i].latitude, "lng" : nodeList[i].longtitude});
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      pathData.push(data.averageUncomfortScore);
+      pathData.push(data.maxUncomfortScore);
+      pathData.push(data.totalUncomfortScore);
+      for (let i = 0; i < data.nodeCount; i++) {
+        pathInfo.push({lat :  data.nodeList[i].latitute, lng :  data.nodeList[i].longtitude});
       }
-      pathInfo.push(response.totalUncomfortScore);
-      pathInfo.push(response.averageUncomfortScore);
-      pathInfo.push(response.maxUncomfortScore);
-      pathInfo.push(response.nodeCount);
-      return path;
+      console.log(path[1]);
+      return path[1];
     })
     .catch(error => {
       console.error(error);

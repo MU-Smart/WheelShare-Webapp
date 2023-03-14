@@ -28,10 +28,10 @@ function Root() {
     window.history.pushState(null, '', `?${params.toString()}`);
   };
 
-  const path = getPath('http://mypathweb.csi.miamioh.edu:8081/testRoute');
-
   const coords = [{lat: 39.5078013, lng: -84.7349985}, {lat: 39.5075956, lng: -84.7348137}, {lat: 39.5073334, lng: -84.7346021}, {lat: 39.5073326, lng: -84.7345406}, {lat: 39.5073315, lng: -84.7344776}, {lat: 39.5073722, lng: -84.7344314}, {lat: 39.5075803, lng: -84.7341949}];
   
+
+
   return (
     <JSAPILoader
       apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
@@ -67,7 +67,7 @@ function Root() {
         }}
       >
         <ControlUI />
-        <MapPath path={getPath('http://mypathweb.csi.miamioh.edu:8081/testRoute')}/>
+        <MapPath path={coords}/>
       </GoogleMap>
       
     </JSAPILoader>
