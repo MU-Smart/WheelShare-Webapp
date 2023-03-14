@@ -1,5 +1,6 @@
 {
   "name": "map-demo",
+  "proxy": "http://mypathweb.csi.miamioh.edu:8081",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
