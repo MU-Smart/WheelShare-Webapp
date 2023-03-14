@@ -1,5 +1,3 @@
-const testURL = 'http://mypathweb.csi.miamioh.edu:8081/testRoute';
-
 /**
  * Function to get the route information from a given url with an API endpoint
  *
@@ -14,12 +12,6 @@ export async function getPath(url) {
   let pathInfo = [];
   let path = [pathData, pathInfo];
 
-  let response = null;
-
-  response = await fetch(url);
-
-  fetch(url).then((res) => (response = res));
-
   return await fetch(url)
     .then((response) => response.json())
     .then((data) => {
@@ -32,7 +24,6 @@ export async function getPath(url) {
           lng: data.nodeList[i].longtitude,
         });
       }
-      console.log(path[1]);
       return path[1];
     })
     .catch((error) => {

@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { MapPath } from 'Components/Google_Map/MapPath.js';
 import { ToggleGoogleSource } from 'Components/Functions/ToggleSource.js';
 import { PlaceAutocomplete } from 'Components/Google_Map/PlaceAutoComplete.js';
+import { getPath } from 'Components/Functions/Path.js';
 
 export const App = () => {
   document.body.style.margin = 0;
@@ -23,13 +24,19 @@ export const App = () => {
   const [showSearchPanel, setShowSearchPanel] = useState(false);
 
   useEffect(() => {
-    setPath(getPath());
+    if (placeFrom && placeTo) {
+      updatePath();
+    }
   }, [placeFrom, placeTo]);
 
-  const getPath = () => {
-    if (!placeFrom || !placeTo) return null;
-    return [placeFrom?.geometry.location, placeTo?.geometry.location];
-  };
+  async function updatePath() {
+    setPath(
+      await getPath(
+        '/api/testRoute'
+        // `/api/getSingleRoute?srcLat=${placeFrom?.geometry.location.lat()}&srcLon=${placeFrom?.geometry.location.lng()}&destLat=${placeTo?.geometry.location.lat()}&destLon=${placeTo?.geometry.location.lng()}`
+      )
+    );
+  }
 
   const updateURLCoords = (lat, lng) => {
     const params = new URLSearchParams(window.location.search);
@@ -203,6 +210,9 @@ export const App = () => {
                 className='btn btn-primary'
                 onClick={() => {
                   console.log('Calculating Path');
+                  if (placeFrom && placeTo) {
+                    updatePath();
+                  }
                 }}
               >
                 Calculate Path
