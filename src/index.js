@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
+import { useState } from 'react';
 
-import { JSAPILoader, GoogleMap, MapPath } from './Components/GoogleMapsWrapper';
+import { JSAPILoader, GoogleMap, MapPath, MapControl } from './Components/GoogleMapsWrapper';
 
 import 'Assets/CSS/GoogleMap.css';
 import ControlUI from 'Components/UI/ControlUI';
@@ -28,9 +29,13 @@ function Root() {
     window.history.pushState(null, '', `?${params.toString()}`);
   };
 
-  const coords = [{lat: 39.5078013, lng: -84.7349985}, {lat: 39.5075956, lng: -84.7348137}, {lat: 39.5073334, lng: -84.7346021}, {lat: 39.5073326, lng: -84.7345406}, {lat: 39.5073315, lng: -84.7344776}, {lat: 39.5073722, lng: -84.7344314}, {lat: 39.5075803, lng: -84.7341949}];
-  
+  let coords = [{ lat: 39.5078013, lng: -84.7349985 }, { lat: 39.5075956, lng: -84.7348137 }, { lat: 39.5073334, lng: -84.7346021 }, { lat: 39.5073326, lng: -84.7345406 }, { lat: 39.5073315, lng: -84.7344776 }, { lat: 39.5073722, lng: -84.7344314 }, { lat: 39.5075803, lng: -84.7341949 }];
 
+  const [path, setPath] = useState(null);
+
+  async function updatePath() {
+    setPath(await getPath('/api/testRoute'));
+  }
 
   return (
     <JSAPILoader
@@ -67,9 +72,9 @@ function Root() {
         }}
       >
         <ControlUI />
-        <MapPath path={coords}/>
+        <MapPath path={coords} />
       </GoogleMap>
-      
+
     </JSAPILoader>
   );
 }

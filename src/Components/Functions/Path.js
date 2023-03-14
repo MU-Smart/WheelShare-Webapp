@@ -6,16 +6,15 @@ const testURL = 'http://mypathweb.csi.miamioh.edu:8081/testRoute';
  * 
  * @param {string} url the API endpoint that the path data is being retrieved from.
  * 
- * @returns {Object} path This is an array that contains the array of lat/lng coordinates
+ * @returns {promise<Object>} path This is an array that contains the array of lat/lng coordinates
  *                  for MapPath to read as well as the path information to determine the 
  *                  path color based on average uncomfort score.
  */
-export function getPath(url) {
+export async function getPath(url) {
   let pathData = [];
   let pathInfo = [];
-  let path = [pathData, pathInfo];
-
-  fetch(url)
+  
+  return await fetch(url)
     .then((response) => response.json())
     .then((data) => {
       pathData.push(data.averageUncomfortScore);
@@ -24,12 +23,10 @@ export function getPath(url) {
       for (let i = 0; i < data.nodeCount; i++) {
         pathInfo.push({lat :  data.nodeList[i].latitute, lng :  data.nodeList[i].longtitude});
       }
+      let path = [pathData, pathInfo];
       console.log(path[1]);
-      return path[1];
     })
     .catch(error => {
       console.error(error);
     })
 }
-
-
