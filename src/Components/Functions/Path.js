@@ -6,6 +6,8 @@
  * @returns {Object} path This is an array that contains the array of lat/lng coordinates
  *                  for MapPath to read as well as the path information to determine the
  *                  path color based on average uncomfort score.
+ * @example
+ * <MapPath path={getPath('API Endpoint URL')}></MapPath>
  */
 const axiosRequest = require('axios');
 
