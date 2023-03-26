@@ -1,11 +1,7 @@
 import { Button, ButtonGroup } from "react-bootstrap";
 import "Assets/CSS/UI.css";
 
-const Footer = ({ setOverlayFeedback, handleCloseOverlay }) => {
-  const feedbackClick = ()  =>  {
-    handleCloseOverlay();
-    setOverlayFeedback(true)
-  }
+const Footer = () => {
 
   return (
     <>
@@ -18,7 +14,7 @@ const Footer = ({ setOverlayFeedback, handleCloseOverlay }) => {
         >
           About Us
         </Button>
-        <Button variant="secondary" onClick={() => feedbackClick()}>
+        <Button variant="secondary">
           Feedback
         </Button>
         <Button variant="secondary">Contact Us</Button>
