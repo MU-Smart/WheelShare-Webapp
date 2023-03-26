@@ -6,10 +6,10 @@ import "App.css";
 import { useEffect, useState } from "react";
 import { MapPath } from "Components/Google_Map/MapPath.js";
 import Footer from "Components/UI_Components/Footer.js";
-import { ToggleGoogleSource } from "Components/Functions/ToggleSource.js";
-import { PlaceAutocomplete } from "Components/Google_Map/PlaceAutoComplete.js";
 import { getPath } from "Components/Functions/Path.js";
 import NavBar from "Components/UI_Components/NavBar.js";
+import { PlaceAutocomplete } from "Components/Google_Map/PlaceAutoComplete.js";
+import SearchPanel from "Components/UI_Components/SearchPanels.js";
 export const App = () => {
   document.body.style.margin = 0;
 
@@ -54,12 +54,14 @@ export const App = () => {
 
   return (
     <>
+      {/* Navigation bar */}
       <NavBar
         mapRef={mapRef}
         showSearchPanel={showSearchPanel}
         setShowSearchPanel={setShowSearchPanel}
       />
 
+      {/* Custom JS Loader */}
       <JSAPILoader
         apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
         libraries={["places"]}
@@ -138,54 +140,20 @@ export const App = () => {
           )}
         </GoogleMap>
       </JSAPILoader>
+
       {/* Search Panel UI */}
       {!mapRef ? null : (
-        <div
-          className={
-            "absolute left-8 top-24 card bg-base-100 bg-opacity-90" +
-            (showSearchPanel ? " flex" : " hidden")
-          }
-        >
-          <div className="card-body gap-4">
-            {/* Place from */}
-            <PlaceAutocomplete
-              className="input input-bordered input-primary"
-              map={mapRef}
-              callback={(place) => {
-                setPlaceFrom(place);
-                mapRef.panTo(place.geometry.location);
-                mapRef.setZoom(15);
-              }}
-              placeholder="From"
-            />
-            {/* Place to */}
-            <PlaceAutocomplete
-              className="input input-bordered input-primary"
-              map={mapRef}
-              callback={(place) => {
-                setPlaceTo(place);
-                mapRef.panTo(place.geometry.location);
-                mapRef.setZoom(15);
-              }}
-              placeholder="To"
-            />
-            {/* Search button */}
-            <div className="card-actions justify-center mt-4">
-              <button
-                className="btn btn-primary"
-                onClick={() => {
-                  console.log("Calculating Path");
-                  if (placeFrom && placeTo) {
-                    updatePath();
-                  }
-                }}
-              >
-                Calculate Path
-              </button>
-            </div>
-          </div>
-        </div>
+        <SearchPanel
+          mapRef={mapRef}
+          placeFrom={placeFrom}
+          setPlaceFrom={setPlaceFrom}
+          placeTo={placeTo}
+          setPlaceTo={setPlaceTo}
+          setPath={setPath}
+          showSearchPanel={showSearchPanel}
+        />
       )}
+      
       <Footer />
     </>
   );

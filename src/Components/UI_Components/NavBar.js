@@ -1,5 +1,4 @@
 import 'App.css';
-import { useState } from 'react';
 import { ToggleGoogleSource } from 'Components/Functions/ToggleSource.js';
 
 const NavBar = (props) => {
@@ -12,7 +11,9 @@ const NavBar = (props) => {
         <div className="navbar-start">
           <button
             className="btn btn-sm btn-primary"
-            onClick={() => props.setShowSearchPanel(!props.showSearchPanel)}
+            onClick={() => {
+              props.setShowSearchPanel(!props.showSearchPanel)
+            }}
           >
             <h3>Toggle Search</h3>
           </button>
