@@ -1,5 +1,5 @@
 import "App.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { PlaceAutocomplete } from "Components/Google_Map/PlaceAutoComplete.js";
 import { getPath } from "Components/Functions/Path.js";
 
@@ -23,7 +23,7 @@ const SearchPanel = (props) => {
     <>
       <div
         className={
-          "absolute left-8 top-24 card bg-base-100 bg-opacity-90" +
+          "absolute left-8 top-24 card bg-base-100 bg-opacity-90 font-mono" +
           (props.showSearchPanel ? " flex" : " hidden")
         }
       >

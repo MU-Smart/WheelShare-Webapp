@@ -1,51 +1,42 @@
 import 'App.css';
-import { ToggleGoogleSource } from 'Components/Functions/ToggleSource.js';
 
 const NavBar = (props) => {
 
   return (
     <>
       {/* Navbar */}
-      <div className="navbar h-16 bg-base-100">
+      <div className="navbar font-mono h-16 bg-base-100">
         {/* Search toggle */}
         <div className="navbar-start">
           <button
-            className="btn btn-sm btn-primary"
+            className="btn btn-primary rounded-full btn-wide"
             onClick={() => {
               props.setShowSearchPanel(!props.showSearchPanel)
             }}
           >
-            <h3>Toggle Search</h3>
+            <div className="text-lg">Map Search</div>
           </button>
         </div>
         <div className="navbar-center prose">
-          <h2>MyPath</h2>
+          <h1>MyPath</h1>
         </div>
         {/* Overlay toggles */}
         <div className="navbar-end gap-2">
           <button
-            className="btn btn-sm btn-primary"
+            className="btn btn-primary"
             onClick={() => {
-              ToggleGoogleSource("surfaces", props.mapRef, 1);
+              console.log("Sign In");
             }}
           >
-            Overlay 1
+            <div className="text-lg">Sign In</div>
           </button>
           <button
-            className="btn btn-sm btn-primary"
+            className="btn btn-primary"
             onClick={() => {
-              ToggleGoogleSource("surfaces", props.mapRef, 1);
+              console.log("Sign Up");
             }}
           >
-            Overlay 2
-          </button>
-          <button
-            className="btn btn-sm btn-primary"
-            onClick={() => {
-              ToggleGoogleSource("surfaces", props.mapRef, 1);
-            }}
-          >
-            Overlay 3
+            <div className="text-lg">Sign Up</div>
           </button>
         </div>
       </div>

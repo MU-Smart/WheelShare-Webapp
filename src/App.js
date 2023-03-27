@@ -3,12 +3,10 @@ import { JSAPILoader } from "./Components/Google_Map/JSAPILoader.js";
 import { Marker } from "Components/Google_Map/Marker.js";
 
 import "App.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MapPath } from "Components/Google_Map/MapPath.js";
 import Footer from "Components/UI_Components/Footer.js";
-import { getPath } from "Components/Functions/Path.js";
 import NavBar from "Components/UI_Components/NavBar.js";
-import { PlaceAutocomplete } from "Components/Google_Map/PlaceAutoComplete.js";
 import SearchPanel from "Components/UI_Components/SearchPanels.js";
 export const App = () => {
   document.body.style.margin = 0;
@@ -23,21 +21,6 @@ export const App = () => {
   const [placeTo, setPlaceTo] = useState(null);
   const [path, setPath] = useState(null);
   const [showSearchPanel, setShowSearchPanel] = useState(false);
-
-  useEffect(() => {
-    if (placeFrom && placeTo) {
-      updatePath();
-    }
-  }, [placeFrom, placeTo]);
-
-  async function updatePath() {
-    setPath(
-      await getPath(
-        "/api/testRoute"
-        // `/api/getSingleRoute?srcLat=${placeFrom?.geometry.location.lat()}&srcLon=${placeFrom?.geometry.location.lng()}&destLat=${placeTo?.geometry.location.lat()}&destLon=${placeTo?.geometry.location.lng()}`
-      )
-    );
-  }
 
   const updateURLCoords = (lat, lng) => {
     const params = new URLSearchParams(window.location.search);
