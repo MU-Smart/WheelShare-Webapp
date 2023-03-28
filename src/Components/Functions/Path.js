@@ -2,9 +2,16 @@ const testURL = '/api/testRoute';
 
 /**
  * Function to get the route information from a given url with an API endpoint.
+ * 
  * It is important to note that in the development environment, a proxy must be 
  * used to satisfy the CORS restrictions present on the backend server. The production
  * code will need to have updated urls to access the data from, as the proxy will not be used.
+ * 
+ * To setup the proxy in the development environment, navigate to package.json and add a line:
+ * "proxy" : "http://mypathweb.csi.miamioh.edu:8081/" or a different target address.
+ * Then, make your api calls using local notation.
+ * For example: fetch('http://mypathweb.csi.miamioh.edu:8081/api/endpoint')
+ * becomes: fetch('/api/endpoint') after the proxy is added.
  * 
  * @param {string} url the url of the API endpoint that the path data is being retrieved from.
  * 
