@@ -14,7 +14,7 @@ const NavBar = (props) => {
               props.setShowSearchPanel(!props.showSearchPanel)
             }}
           >
-            <div className="text-lg">Map Search</div>
+            <div className="text-lg">Search</div>
           </button>
         </div>
         <div className="navbar-center prose">
