@@ -11,10 +11,16 @@ const SearchPanel = (props) => {
   }, [props.placeFrom, props.placeTo]);
 
   async function updatePath() {
+    let placeFrom = await props.placeFrom;
+    let placeTo = await props.placeTo;
+    
     props.setPath(
       await getPath(
-        "/api/testRoute"
-        // `/api/getSingleRoute?srcLat=${placeFrom?.geometry.location.lat()}&srcLon=${placeFrom?.geometry.location.lng()}&destLat=${placeTo?.geometry.location.lat()}&destLon=${placeTo?.geometry.location.lng()}`
+        "/api/getSingleRoute?srcLat=" + 
+        placeFrom.geometry.location.lat() + "&srcLon=" + 
+        placeFrom.geometry.location.lng() + "&destLat=" + 
+        placeTo.geometry.location.lat() + "&destLon=" + 
+        placeTo.geometry.location.lng()
       )
     );
   }

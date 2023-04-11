@@ -82,7 +82,7 @@ export const App = () => {
         >
           {/* FOR PATRICK: Place path objects here! */}
           {/* Path between placeFrom and placeTo */}
-          {!path ? null : <MapPath path={path} />}
+          {!path ? null : <MapPath path={path} strokeColor={"#4a8af7"} strokeWeight={8}/>}
           {/* Marker for placeFrom */}
           {!placeFrom ? null : (
             <Marker
