@@ -1,11 +1,15 @@
 /**
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0abb722 (Fixed getPath not updating path prop in MapPath components)
  * Function to get the route information from a given url with an API endpoint
  *
  * @param {string} url the API endpoint that the path data is being retrieved from.
  *
  * @returns {Object} path This is an array that contains the array of lat/lng coordinates
  *                  for MapPath to read as well as the path information to determine the
+<<<<<<< HEAD
 =======
  * Function to get the route information from a given url with an API endpoint.
  * 
@@ -25,9 +29,9 @@
  * @returns {promise<Object>} An array that contains the array of lat/lng coordinates
  *                  for MapPath to read as well as the path information to determine the 
 >>>>>>> dabb6db (Added comments)
+=======
+>>>>>>> 0abb722 (Fixed getPath not updating path prop in MapPath components)
  *                  path color based on average uncomfort score.
- * @example
- * <MapPath path={getPath('API Endpoint URL')}></MapPath>
  */
 const axiosRequest = require('axios');
 
