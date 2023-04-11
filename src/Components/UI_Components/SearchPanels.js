@@ -6,11 +6,6 @@ import { getPath } from "Components/Functions/Path.js";
 const SearchPanel = (props) => {
   useEffect(() => {
     if (props.placeFrom && props.placeTo) {
-      updatePath();
-<<<<<<< HEAD
-=======
-
->>>>>>> 9fddb99 (Completed route rendering for user inputted locations)
     }
   }, [props.placeFrom, props.placeTo]);
 
