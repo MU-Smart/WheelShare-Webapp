@@ -6,17 +6,21 @@ import { getPath } from "Components/Functions/Path.js";
 const SearchPanel = (props) => {
   useEffect(() => {
     if (props.placeFrom && props.placeTo) {
-      updatePath();
     }
   }, [props.placeFrom, props.placeTo]);
 
   async function updatePath() {
-    props.setPath(
-      await getPath(
-        "/api/testRoute"
-        // `/api/getSingleRoute?srcLat=${placeFrom?.geometry.location.lat()}&srcLon=${placeFrom?.geometry.location.lng()}&destLat=${placeTo?.geometry.location.lat()}&destLon=${placeTo?.geometry.location.lng()}`
-      )
-    );
+    let placeFrom = await props.placeFrom;
+    let placeTo = await props.placeTo;
+
+    let apiLink = "/api/getSingleRoute?srcLat="
+      + placeFrom.geometry.location.lat() + "&srcLon=" 
+      + placeFrom.geometry.location.lng() + "&destLat=" 
+      + placeTo.geometry.location.lat() + "&destLon=" 
+      + placeTo.geometry.location.lng();
+
+    let tmp = "/api/getSingleRoute?srcLat=39.51075060000001&srcLon=-84.7335604&destLat=39.5071483&destLon=-84.7330698";
+    props.setPath(await getPath(apiLink));
   }
 
   return (
@@ -53,7 +57,7 @@ const SearchPanel = (props) => {
           {/* Search button */}
           <div className="card-actions justify-center mt-4">
             <button
-              className="btn btn-primary"
+              className="btn btn-primary rounded-full"
               onClick={() => {
                 console.log("Calculating Path");
                 if (props.placeFrom && props.placeTo) {
