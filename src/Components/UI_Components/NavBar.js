@@ -5,39 +5,40 @@ const NavBar = (props) => {
   return (
     <>
       {/* Navbar */}
-      <div className="navbar font-mono h-16 bg-base-100">
+      <div className="navbar font-mono h-16 bg-accent">
         {/* Search toggle */}
         <div className="navbar-start">
           <button
-            className="btn btn-primary rounded-full btn-wide"
+            className="btn btn-wide text-lg text-white hover:border-white hover:border-2 m-4"
             onClick={() => {
               props.setShowSearchPanel(!props.showSearchPanel)
             }}
-          >
-            <div className="text-lg">Search</div>
+          > Search
           </button>
         </div>
         <div className="navbar-center prose">
-          <h1>MyPath</h1>
+          <h1 className="text-white">MyPath</h1>
         </div>
         {/* Overlay toggles */}
         <div className="navbar-end gap-2">
+        <div class="btn-group lg:btn-group-horizontal">
           <button
-            className="btn btn-primary"
+            className="btn text-lg text-white hover:border-white hover:border-2"
             onClick={() => {
               console.log("Sign In");
             }}
           >
-            <div className="text-lg">Sign In</div>
+            Sign In
           </button>
           <button
-            className="btn btn-primary"
+            className="btn text-lg text-white hover:border-white hover:border-2"
             onClick={() => {
               console.log("Sign Up");
             }}
           >
-            <div className="text-lg">Sign Up</div>
+            Sign Up
           </button>
+          </div>
         </div>
       </div>
     </>

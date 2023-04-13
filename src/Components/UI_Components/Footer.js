@@ -3,9 +3,9 @@ import "Assets/CSS/UI.css";
 const Footer = () => {
   return (
     <>
-      <footer className="footer p-4 bg-base-100 font-mono">
+      <footer className="footer p-4 bg-accent font-mono text-white">
         <div>
-          <span className="footer-title">About Us</span>
+          <span className="font-bold text-xl">About Us</span>
           <a>
             MyPath is a project aiming to provide a accesibility assistance for mobility-impared
             people. <br />
@@ -23,7 +23,7 @@ const Footer = () => {
         </div>
 
         <div>
-          <span className="footer-title">Our Team</span>
+          <span className="font-bold text-xl">Our Team</span>
           <a>Vaskar Raychoudhury, Nam Hoang,</a>
           <a>Thomas Nguyen, Nico Kazynski,</a>
           <a>Patrick Duimstra, Kian Metcalfe</a>
@@ -31,7 +31,7 @@ const Footer = () => {
         </div>
 
         <div>
-          <span className="footer-title">Feedback</span>
+          <span className="font-bold text-xl">Feedback</span>
           <a>
             The project is still under active development and maintainance <br />
             If you encounter any bugs or want to request any features, please contact us&nbsp;
