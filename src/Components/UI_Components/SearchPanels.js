@@ -8,7 +8,7 @@ const SearchPanel = (props) => {
     let placeTo = await props.placeTo;
 
     let apiLink =
-      "/api/getSingleRoute?srcLat=" +
+      "/webapi/getSingleRoute?srcLat=" +
       placeFrom.geometry.location.lat() +
       "&srcLon=" +
       placeFrom.geometry.location.lng() +
@@ -17,8 +17,6 @@ const SearchPanel = (props) => {
       "&destLon=" +
       placeTo.geometry.location.lng();
 
-    let tmp =
-      "/api/getSingleRoute?srcLat=39.51075060000001&srcLon=-84.7335604&destLat=39.5071483&destLon=-84.7330698";
     props.setPath(await getPath(apiLink));
   }
 

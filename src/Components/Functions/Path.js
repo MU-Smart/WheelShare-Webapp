@@ -11,8 +11,6 @@
  */
 const axiosRequest = require('axios');
 
-const testURL = "/api/testRoute";
-
 export async function getPath(url) {
   try {
     let response = await axiosRequest.get(url)
