@@ -1,4 +1,4 @@
-import { createRef, useEffect } from "react";
+import { createRef, useEffect, useState } from "react";
 
 /**
  * React component that renders an autocomplete search box.
@@ -17,38 +17,105 @@ import { createRef, useEffect } from "react";
  * @see https://developers.google.com/maps/documentation/javascript/places-autocomplete
  */
 export function PlaceAutocomplete(props) {
+  const [inputText, setInputText] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [suggestionInputFocus, setSuggestionInputFocus] = useState(false);
   const ref = createRef();
+  const autoCompleteService =
+    new window.google.maps.places.AutocompleteService();
 
   useEffect(() => {
-    // Check if the Google Maps Places API is loaded.
-    if (window.google.maps.places) {
-      // Create the autocomplete search box.
-      const autocomplete = new window.google.maps.places.Autocomplete(
-        ref.current
-      );
-      autocomplete.bindTo("bounds", props.map);
-
-      // Listen for autocomplete selection.
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        if (place.geometry) {
-          props.callback(place);
-        }
-      });
-    } else {
-      console.error("Google Maps Places API not loaded");
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setSuggestionInputFocus(false);
+      }
     }
-  }, []);
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [ref]);
+
+  const onSuggestionInputChange = (event) => {
+    setInputText(event.target.value);
+
+    if (event.target.value == "") {
+      setSuggestions([]);
+      return;
+    }
+
+    autoCompleteService.getQueryPredictions(
+      {
+        input: event.target.value,
+        bounds: props.map.getBounds(),
+        types: ["geocode"],
+      },
+      (predictions, status) => {
+        console.log(predictions)
+        if (status === "OK") {
+          const newSuggestionList = predictions.map((prediction) => ({
+            description: prediction.description,
+            placeId: prediction.place_id,
+          }));
+          setSuggestions(newSuggestionList);
+        } else if (status === "ZERO_RESULTS") {
+          setSuggestions([]);
+        }
+      }
+    );
+  };
+
+  const onSuggestionListClick = (placeId, description) => {
+    setInputText(description);
+    const placeDetailRequest = new window.google.maps.places.PlacesService(
+      ref.current
+    );
+    
+    placeDetailRequest.getDetails(
+      {
+        placeId: placeId,
+      },
+      (predictions, status) => {
+        if (status === "OK" && predictions) {
+          console.log(predictions);
+          props.callback(predictions);
+        }
+      }
+    );
+  };
 
   // Render the input box.
   return (
-    <input
-      className={props.className || "Autocomplete"}
-      id={props.id || "Autocomplete"}
-      ref={ref}
-      type="text"
-      style={props.style || {}}
-      placeholder={props.placeholder || ""}
-    />
+    <div className="w-96">
+      <input
+        className={props.className || "Autocomplete"}
+        id={props.id || "Autocomplete"}
+        ref={ref}
+        type="text"
+        style={props.style || {}}
+        placeholder={props.placeholder || ""}
+        onChange={(e) => onSuggestionInputChange(e)}
+        onClick={() => setSuggestionInputFocus(true)}
+        value={inputText}
+      />
+      {suggestionInputFocus && suggestions.length > 0 && (
+        <ul
+          tabIndex={0}
+          class="dropdown-content menu p-2 bg-base-100 text-sm max-w-full"
+        >
+          {suggestions.map((suggestion) => {
+            return (
+              <li>
+                <a onClick={() => onSuggestionListClick(suggestion.placeId, suggestion.description)}>
+                  {suggestion.description}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
   );
 }

@@ -24,14 +24,14 @@ const SearchPanel = (props) => {
     <>
       <div
         className={
-          "absolute top-16 card font-mono bg-slate-500" +
+          "absolute top-16 card font-mono bg-slate-500 max-w-md" +
           (props.showSearchPanel ? " flex" : " hidden")
         }
       >
         <div className="card-body card-compact p-6">
           {/* Place from */}
           <PlaceAutocomplete
-            className="input input-base-100 w-full max-w-md text-black bg-white "
+            className="input input-accent w-full max-w-md text-black bg-white rounded-none text-sm"
             map={props.mapRef}
             callback={(place) => {
               props.setPlaceFrom(place);
@@ -42,7 +42,7 @@ const SearchPanel = (props) => {
           />
           {/* Place to */}
           <PlaceAutocomplete
-            className="input input-accent w-full max-w-md text-black bg-white"
+            className="input input-accent w-full max-w-md text-black bg-white rounded-none text-sm"
             map={props.mapRef}
             callback={(place) => {
               props.setPlaceTo(place);
