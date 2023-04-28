@@ -25,7 +25,7 @@ const NavBar = (props) => {
           <button
             className="btn text-lg text-white hover:border-white hover:border-2"
             onClick={() => {
-              console.log("Sign In");
+              props.setShowLoginOveray(true);
             }}
           >
             Sign In

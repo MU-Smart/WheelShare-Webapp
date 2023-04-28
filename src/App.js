@@ -1,6 +1,7 @@
 import { GoogleMap } from "Components/Google_Map/GoogleMap.js";
 import { JSAPILoader } from "./Components/Google_Map/JSAPILoader.js";
 import { Marker } from "Components/Google_Map/Marker.js";
+import LoginForm from "Components/UI_Components/LoginForm.js";
 
 import "App.css";
 import { useState } from "react";
@@ -21,6 +22,7 @@ export const App = () => {
   const [placeTo, setPlaceTo] = useState(null);
   const [path, setPath] = useState(null);
   const [showSearchPanel, setShowSearchPanel] = useState(false);
+  const [showLoginOverlay, setShowLoginOveray] = useState(false);
 
   const updateURLCoords = (lat, lng) => {
     const params = new URLSearchParams(window.location.search);
@@ -37,11 +39,14 @@ export const App = () => {
 
   return (
     <>
+    {showLoginOverlay && <LoginForm setShowLoginOveray={setShowLoginOveray}/>}
+    <>
       {/* Navigation bar */}
       <NavBar
         mapRef={mapRef}
         showSearchPanel={showSearchPanel}
         setShowSearchPanel={setShowSearchPanel}
+        setShowLoginOveray={setShowLoginOveray}
       />
 
       {/* Custom JS Loader */}
@@ -138,6 +143,7 @@ export const App = () => {
       )}
       
       <Footer />
+    </>
     </>
   );
 };
