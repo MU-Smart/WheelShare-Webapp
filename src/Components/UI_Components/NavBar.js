@@ -25,7 +25,7 @@ const NavBar = (props) => {
           <button
             className="btn text-lg text-white hover:border-white hover:border-2"
             onClick={() => {
-              props.setShowLoginOveray(true);
+              props.setShowLoginOverlay(true);
             }}
           >
             Sign In
@@ -33,7 +33,7 @@ const NavBar = (props) => {
           <button
             className="btn text-lg text-white hover:border-white hover:border-2"
             onClick={() => {
-              console.log("Sign Up");
+              props.setShowSignUpOverlay(true);
             }}
           >
             Sign Up
