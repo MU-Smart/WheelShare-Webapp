@@ -7,6 +7,8 @@ const LoginForm = (props) => {
     formState: { errors },
   } = useForm();
 
+  console.log("Test")
+
   const onCreateAccountClick = () => {
     props.setShowLoginOverlay(false);
     props.setShowSignUpOverlay(true);
