@@ -1,7 +1,6 @@
 import { GoogleMap } from "Components/Google_Map/GoogleMap.js";
 import { JSAPILoader } from "./Components/Google_Map/JSAPILoader.js";
 import { Marker } from "Components/Google_Map/Marker.js";
-import LoginForm from "Components/UI_Components/LoginForm.js";
 
 import "App.css";
 import { useState } from "react";
@@ -9,6 +8,9 @@ import { MapPath } from "Components/Google_Map/MapPath.js";
 import Footer from "Components/UI_Components/Footer.js";
 import NavBar from "Components/UI_Components/NavBar.js";
 import SearchPanel from "Components/UI_Components/SearchPanels.js";
+import SignUpForm from "Components/UI_Components/SignUpForm.js";
+import LoginForm from "Components/UI_Components/LoginForm.js";
+
 export const App = () => {
   document.body.style.margin = 0;
 
@@ -22,7 +24,8 @@ export const App = () => {
   const [placeTo, setPlaceTo] = useState(null);
   const [path, setPath] = useState(null);
   const [showSearchPanel, setShowSearchPanel] = useState(false);
-  const [showLoginOverlay, setShowLoginOveray] = useState(false);
+  const [showLoginOverlay, setShowLoginOverlay] = useState(false);
+  const [showSignUpOverlay, setShowSignUpOverlay] = useState(false);
 
   const updateURLCoords = (lat, lng) => {
     const params = new URLSearchParams(window.location.search);
@@ -39,14 +42,16 @@ export const App = () => {
 
   return (
     <>
-    {showLoginOverlay && <LoginForm setShowLoginOveray={setShowLoginOveray}/>}
+    {showLoginOverlay && <LoginForm setShowLoginOverlay={setShowLoginOverlay} setShowSignUpOverlay={setShowSignUpOverlay}/>}
+    {showSignUpOverlay && <SignUpForm setShowLoginOverlay={setShowLoginOverlay} setShowSignUpOverlay={setShowSignUpOverlay}/>}
     <>
       {/* Navigation bar */}
       <NavBar
         mapRef={mapRef}
         showSearchPanel={showSearchPanel}
         setShowSearchPanel={setShowSearchPanel}
-        setShowLoginOveray={setShowLoginOveray}
+        setShowLoginOverlay={setShowLoginOverlay}
+        setShowSignUpOverlay={setShowSignUpOverlay}
       />
 
       {/* Custom JS Loader */}

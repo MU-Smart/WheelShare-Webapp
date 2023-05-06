@@ -1,26 +1,23 @@
 import { useForm } from "react-hook-form";
 
-const LoginForm = (props) => {
+const SignUpForm = (props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  console.log("Test")
-
-  const onCreateAccountClick = () => {
-    props.setShowLoginOverlay(false);
-    props.setShowSignUpOverlay(true);
+  const onSignInClick = () => {
+    props.setShowSignUpOverlay(false);
+    props.setShowLoginOverlay(true);
   };
 
   const onLoginClick = (data) => {
-    console.log("Hello");
     console.log(data);
   };
 
   const onCloseClick = () => {
-    props.setShowLoginOverlay(false);
+    props.setShowSignUpOverlay(false);
   };
 
   return (
@@ -45,15 +42,29 @@ const LoginForm = (props) => {
         </svg>
       </button>
       <label className="label flex flex-col">
-        <span className="label-text font-semibold text-4xl">Welcome Back</span>
+        <span className="label-text font-semibold text-4xl">
+          Let's Create An Account
+        </span>
         <span className="label-text font-medium">
-          Sign in to MyPath WheelShare
+          Create an account to have full access to MyPath
         </span>
       </label>
 
-      <form className="form-control w-full max-w-xs" onSubmit={handleSubmit(onLoginClick)}>
+      <form
+        className="form-control w-full max-w-xs"
+        onSubmit={handleSubmit(onLoginClick)}
+      >
         <label className="label">
-          <span className="label-text">What is your email?</span>
+          <span className="label-text">Name</span>
+        </label>
+        <input
+          type="text"
+          className="input input-bordered w-full max-w-xs"
+          {...register("name")}
+        />
+
+        <label className="label">
+          <span className="label-text">Email</span>
         </label>
         <input
           type="text"
@@ -70,28 +81,50 @@ const LoginForm = (props) => {
         />
         {errors.email && (
           <label className="label">
-            <span className="label-text text-red-600 font-semibold ">
+            <span className="label-text text-red-600 font-semibold">
               Please enter a valid email
             </span>
           </label>
         )}
 
-        <div className="w-full max-w-xs mb-3.5">
+        <div className="w-full max-w-xs">
           <label className="label">
-            <span className="label-text">Please input your password</span>
+            <span className="label-text">Password</span>
           </label>
           <input
             type="password"
-            placeholder="my secret password"
             className="input input-bordered w-full max-w-xs"
             {...register("password")}
           />
         </div>
 
-        <button
-          type="submit"
-          className="btn btn-accent"
-        >
+        <div className="w-full max-w-xs">
+          <label className="label">
+            <span className="label-text">Age</span>
+          </label>
+          <input
+            type="number"
+            min={1}
+            max={100}
+            {...register("age")}
+            className="input input-bordered w-full max-w-xs"
+          />
+        </div>
+
+        <div className="w-full max-w-xs mb-3.5">
+          <label className="label">
+            <span className="label-text">Gender</span>
+          </label>
+          <select className="select select-bordered w-full max-w-xs" {...register("gender")}>
+            <option selected>
+              Male
+            </option>
+            <option>Female</option>
+            <option>Do Not Wish to Disclose</option>
+          </select>
+        </div>
+
+        <button type="submit" className="btn btn-accent">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -106,24 +139,24 @@ const LoginForm = (props) => {
               d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          Login
+          Create Account
         </button>
       </form>
 
       <label className="label flex flex-col">
-          <span className="label-text font-medium">
-            Dont have an account?{" "}
-            <button
-              className="underline underline-offset-2"
-              onClick={() => onCreateAccountClick()}
-            >
-              Sign up here{" "}
-            </button>
-            .
-          </span>
-        </label>
+        <span className="label-text font-medium">
+          Already have an account?{" "}
+          <button
+            className="underline underline-offset-2"
+            onClick={() => onSignInClick()}
+          >
+            Sign in here{" "}
+          </button>
+          .
+        </span>
+      </label>
     </div>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
