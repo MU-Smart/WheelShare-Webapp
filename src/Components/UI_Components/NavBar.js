@@ -1,5 +1,3 @@
-import 'App.css';
-
 const NavBar = (props) => {
 
   return (

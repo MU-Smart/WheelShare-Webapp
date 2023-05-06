@@ -1,4 +1,3 @@
-import "App.css";
 import { PlaceAutocomplete } from "Components/Google_Map/PlaceAutoComplete.js";
 import { getPath } from "Components/Functions/Path.js";
 

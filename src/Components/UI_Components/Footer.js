@@ -1,5 +1,3 @@
-import "Assets/CSS/UI.css";
-
 const Footer = () => {
   return (
     <>
@@ -44,14 +42,6 @@ const Footer = () => {
             . <br/>Thank you for your support.
           </a>
         </div>
-
-        {/* <div>
-          <span className="footer-title" >Feedback</span>
-          <a>
-            The project is still under active development and maintainance. If you found any bugs, please report to us at &nbsp; 
-            <a className="link link-hover link-success" href="http://routemypath.com">here</a>.
-          </a>
-        </div> */}
       </footer>
     </>
   );
