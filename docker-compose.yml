@@ -22,7 +22,7 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
     depends_on:
-      - backend
+      - web-backend
     networks:
       - mypath-link
       
