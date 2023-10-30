@@ -15,5 +15,8 @@ COPY . .
 
 EXPOSE 3000
 
+# Build the app
+RUN npm run build
+
 # Serve the app
 CMD ["serve", "-s", "build"]
