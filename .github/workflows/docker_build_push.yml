@@ -1,0 +1,41 @@
+name: Docker Build, Test & Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build and Test
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        tags: web:latest
+        push: false
+
+    - name: Login to Google Artifact Registry
+      uses: docker/login-action@v1
+      with:
+        registry: us-east5-docker.pkg.dev
+        username: _json_key
+        password: ${{ secrets.GAR_KEY }}
+
+    - name: Push to Google Artifact Registry
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        tags: us-east5-docker.pkg.dev/wheelshare-webapp/wheelshare/web:latest
+        push: true
