@@ -19,7 +19,7 @@ services:
 
   web:
     restart: always
-    image: us-east5-docker.pkg.dev/wheelshare-webapp/wheelshare-webapp
+    image: us-east5-docker.pkg.dev/wheelshare-webapp/wheelshare/web:latest
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
     depends_on:
@@ -29,7 +29,7 @@ services:
       
   web-backend:
     restart: always
-    image: us-east5-docker.pkg.dev/wheelshare-webapp/wheelshare-backend
+    image: us-east5-docker.pkg.dev/wheelshare-webapp/wheelshare/web-backend:latest
     volumes:
       - ./firebase-key.json:/app/firebase-key.json
     networks:
