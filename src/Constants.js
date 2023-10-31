@@ -10,3 +10,5 @@ export const SLOPE_MAX = 15.0;
 export const MIN_ZOOM_LEVEL = 14;
 export const MAX_ZOOM_LEVEL = 22;
 export const ZOOM_INTERP = [15, 1, 16, 1.6, 18, 6];
+
+export const MAPS_API_KEY = "AIzaSyA6DAUqqElepFWCMhLLApQUJC4MaRect9M"

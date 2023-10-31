@@ -10,6 +10,7 @@ import NavBar from "Components/UI_Components/NavBar.js";
 import SearchPanel from "Components/UI_Components/SearchPanels.js";
 import SignUpForm from "Components/UI_Components/SignUpForm.js";
 import LoginForm from "Components/UI_Components/LoginForm.js";
+import { MAPS_API_KEY } from "Constants.js";
 
 export const App = () => {
   document.body.style.margin = 0;
@@ -56,7 +57,7 @@ export const App = () => {
 
       {/* Custom JS Loader */}
       <JSAPILoader
-        apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+        apiKey={MAPS_API_KEY}
         libraries={["places"]}
       >
         <GoogleMap
