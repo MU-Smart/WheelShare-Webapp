@@ -8,15 +8,21 @@ COPY package*.json .
 
 # Download dependencies
 RUN npm install
-RUN npm install -g serve
 
 # Copy the source code
 COPY . .
 
-EXPOSE 3000
-
 # Build the app
 RUN npm run build
 
-# Serve the app
-CMD ["serve", "-s", "build"]
+# ----- Production Stage -----
+FROM nginx:stable-alpine
+
+# Copy the build files to the nginx server
+COPY --from=builder /app/build /var/www/mypathweb/static
+
+# Copy the nginx configuration file
+COPY web.conf /etc/nginx/conf.d/default.conf
+
+# Expose the port
+EXPOSE 80
