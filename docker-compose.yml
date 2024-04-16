@@ -28,16 +28,8 @@ services:
     image: us-east5-docker.pkg.dev/wheelshare-webapp/wheelshare/web:latest
     depends_on:
       - web-backend
-    ports:
-      - 8080:8080
     networks:
       - mypath-link
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 5m
-      timeout: 10s
-      retries: 3
-      start_period: 30s
 
   web-backend:
     restart: always
@@ -48,12 +40,6 @@ services:
       - 8081:8081
     networks:
       - mypath-link
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
-      interval: 5m
-      timeout: 10s
-      retries: 3
-      start_period: 30s
 
 networks:
   mypath-link:
