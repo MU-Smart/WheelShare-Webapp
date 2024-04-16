@@ -1,10 +1,10 @@
-version: '3'
+version: "3"
 
 services:
   nginx:
     restart: always
     image: nginx:stable-alpine
-    command: [nginx, '-g', 'daemon off;']
+    command: [nginx, "-g", "daemon off;"]
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - /etc/letsencrypt:/etc/letsencrypt
@@ -16,22 +16,44 @@ services:
       - web-backend
     networks:
       - mypath-link
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 5m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   web:
     restart: always
     image: us-east5-docker.pkg.dev/wheelshare-webapp/wheelshare/web:latest
     depends_on:
       - web-backend
+    ports:
+      - 8080:8080
     networks:
       - mypath-link
-      
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 5m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
   web-backend:
     restart: always
     image: us-east5-docker.pkg.dev/wheelshare-webapp/wheelshare/web-backend:latest
     volumes:
       - ./firebase-key.json:/app/firebase-key.json
+    ports:
+      - 8081:8081
     networks:
       - mypath-link
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 5m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 networks:
   mypath-link:
