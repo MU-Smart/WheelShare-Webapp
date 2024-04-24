@@ -10,6 +10,7 @@ import NavBar from "Components/UI_Components/NavBar.js";
 import SearchPanel from "Components/UI_Components/SearchPanels.js";
 import SignUpForm from "Components/UI_Components/SignUpForm.js";
 import LoginForm from "Components/UI_Components/LoginForm.js";
+import LayerControl from "Components/UI_Components/LayerControl.js";
 import { MAPS_API_KEY } from "Constants.js";
 
 export const App = () => {
@@ -19,6 +20,7 @@ export const App = () => {
   // TODO - Add incline preference
   // TODO - Add routing display
   // TODO - Add data to url paramenters
+
 
   const [mapRef, setMapRef] = useState(null);
   const [placeFrom, setPlaceFrom] = useState(null);
@@ -45,11 +47,13 @@ export const App = () => {
     <>
     {showLoginOverlay && <LoginForm setShowLoginOverlay={setShowLoginOverlay} setShowSignUpOverlay={setShowSignUpOverlay}/>}
     {showSignUpOverlay && <SignUpForm setShowLoginOverlay={setShowLoginOverlay} setShowSignUpOverlay={setShowSignUpOverlay}/>}
+    {mapRef && <LayerControl mapRef={mapRef}/>}
+    
     <>
       {/* Navigation bar */}
       <NavBar
         mapRef={mapRef}
-        showSearchPanel={showSearchPanel}
+        showSearchPanelx={showSearchPanel}
         setShowSearchPanel={setShowSearchPanel}
         setShowLoginOverlay={setShowLoginOverlay}
         setShowSignUpOverlay={setShowSignUpOverlay}
@@ -147,7 +151,6 @@ export const App = () => {
           showSearchPanel={showSearchPanel}
         />
       )}
-      
       <Footer />
     </>
     </>
