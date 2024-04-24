@@ -76,12 +76,10 @@ const ToggleGoogleSource = (type, gmap, slope, activeLayer) => {
         if (activeLayer !== 'surfaces') {
           gmap.data.setStyle(function(feature) {
             var color = surfaceColor[feature.getProperty("surface")];
-            if (color === undefined) {
-              color = "black";
-            }
             return ({
               strokeColor: color,
-              strokeOpacity: 1,
+              strokeOpacity: (color === undefined ? 0 : 1),
+              // strokeOpacity: 1,
               fillOpacity: 0,
               strokeWeight: 2
             });
