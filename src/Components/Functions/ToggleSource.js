@@ -1,90 +1,93 @@
-import { inclineMap } from 'Assets/LayerStyles/inclineMap.ts';
-import { surfaceMap } from 'Assets/LayerStyles/surfaceMap.ts';
+export const surfaceColor = {
+  "concrete": "rgb(150, 150, 150)",
+  "paved": "rgb(150, 150, 150)",
+  "asphalt": "black",
+  "paving_stones": "rgb(100, 100, 100)",
+  "cobble_stones": "rgb(255, 150, 150)",
+  "bricks": "rgb(230, 130, 50)"
+}
 
-const sidewalkData = require('Assets/sidewalk.geojson');
-
-// TODO: REWRITE THIS LOGIC -> IT CAN BE SIMPLIFIED
-/*
-    Handles: 
-      Change in slope  -> rerender slopemap if active
-      Toggle SlopeMap  -> toggle layer 
-      Toggle SurfaceMap-> toggle layer
-*/
-
-const ToggleSource = (type, mymap, slope) => {
-  if (mymap) {
-    // Add Sidewalk data to the map (only occurs first time)
-    if (mymap.getMap().getSource('sidewalk') === undefined)
-      mymap.getMap().addSource('sidewalk', {
-        type: 'geojson',
-        data: sidewalkData,
-      });
-
-    switch (type) {
-      case 'slopeChange': {
-        // Could try to use mymap.getMap().setLayoutProperty()
-        if (mymap.getMap().getLayer('inclineMap') !== undefined) {
-          mymap.getMap().removeLayer('inclineMap');
-          mymap.getMap().addLayer(inclineMap(slope));
-        }
-        break;
-      }
-
-      case 'inclines': {
-        if (mymap.getMap().getLayer('inclineMap') === undefined) {
-          mymap.getMap().addLayer(inclineMap(slope));
-        } else {
-          mymap.getMap().removeLayer('inclineMap');
-        }
-        break;
-      }
-
-      case 'surfaces': {
-        if (mymap.getMap().getLayer('surfaceMap') === undefined) {
-          mymap.getMap().addLayer(surfaceMap);
-        } else {
-          mymap.getMap().removeLayer('surfaceMap');
-        }
-        break;
-      }
-      default: {
-        console.error(`Invalid Layer type: ${type}`);
-      }
-    }
-  }
-};
+const sidewalkData = require('Assets/sidewalk.json');
 
 // Load Google Map Layers from GeoJSON
-const ToggleGoogleSource = (type, gmap, slope) => {
-  if (gmap.data) {
-    // Add Sidewalk data to the map (only occurs first time)
-    if (gmap.data.getFeatureById('sidewalk') === undefined) {
-      gmap.data.loadGeoJson('Assets/sidewalk.geojson');
+const ToggleGoogleSource = (type, gmap, slope, activeLayer) => {
+  const hideLayer = () => {
+    if (gmap.data) {
+      gmap.data.setStyle(function(feature) {
+        return ({
+          strokeOpacity: 0,
+          fillOpacity: 0,
+        });
+      });
     }
+  }
 
+  if (gmap.data) {
+
+    // Add Sidewalk data to the map (only occurs first time)
     switch (type) {
+      case 'initialize': {
+        gmap.data.addGeoJson(sidewalkData);
+        hideLayer();
+        break;
+      }
+
       case 'slopeChange': {
-        if (gmap.data.getFeatureById('inclineMap') !== undefined) {
-          gmap.data.remove(gmap.data.getFeatureById('inclineMap'));
-          gmap.data.addGeoJson(inclineMap(slope));
+        if (activeLayer === 'incline') {
+          gmap.data.setStyle(function(feature) {
+            var incline = feature.getProperty('incline');
+            var color = "rgb(180,150,100)";
+            if (incline !== undefined) {
+              color = parseFloat(incline) <= slope ? 'green' : 'red';
+            }
+            return ({
+              strokeColor: color,
+              strokeOpacity: 1,
+              fillOpacity: 0,
+              strokeWeight: 2
+            });
+          });
         }
         break;
       }
 
-      case 'inclines': {
-        if (gmap.data.getFeatureById('inclineMap') === undefined) {
-          gmap.data.addGeoJson(inclineMap(slope));
+      case 'incline': {
+        if (activeLayer !== 'incline') {
+          gmap.data.setStyle(function(feature) {
+            var incline = feature.getProperty('incline');
+            var color = "rgb(180,150,100)";
+            if (incline !== undefined) {
+              color = parseFloat(incline) <= slope ? 'green' : 'red';
+            }
+            return ({
+              strokeColor: color,
+              strokeOpacity: 1,
+              fillOpacity: 0,
+              strokeWeight: 2
+            });
+          });
         } else {
-          gmap.data.remove(gmap.data.getFeatureById('inclineMap'));
+          hideLayer();
         }
         break;
       }
 
       case 'surfaces': {
-        if (gmap.data.getFeatureById('surfaceMap') === undefined) {
-          gmap.data.addGeoJson(surfaceMap);
+        if (activeLayer !== 'surfaces') {
+          gmap.data.setStyle(function(feature) {
+            var color = surfaceColor[feature.getProperty("surface")];
+            if (color === undefined) {
+              color = "black";
+            }
+            return ({
+              strokeColor: color,
+              strokeOpacity: 1,
+              fillOpacity: 0,
+              strokeWeight: 2
+            });
+          });
         } else {
-          gmap.data.remove(gmap.data.getFeatureById('surfaceMap'));
+          hideLayer();
         }
         break;
       }
@@ -95,5 +98,5 @@ const ToggleGoogleSource = (type, gmap, slope) => {
   }
 };
 
-export default ToggleSource;
+// export default ToggleSource;
 export { ToggleGoogleSource };
